@@ -4,6 +4,8 @@ import util
 import qrcode
 import pdb
 import urllib
+import requests
+import json
 
 app = Bottle()
 
@@ -41,7 +43,138 @@ def get_quiz(partname):
 
 @app.route('/quiz/<partname>', method='POST')
 def get_quiz(partname):
-	return """<p> You passed the exam!!</p><br/><p><a href='/info/%s'>info</a></p>""" % partname
+	err = '';
+	answer1 = request.forms.get('answer1')
+	answer2 = request.forms.get('answer2')
+	answer3 = request.forms.get('answer3')
+	answer4 = request.forms.get('answer4')
+	answer5 = request.forms.get('answer5')
+	answer6 = request.forms.get('answer6')
+	answer7 = request.forms.get('answer7')
+	answer8 = request.forms.get('answer8')
+	answer9 = request.forms.get('answer9')
+	answer10 = request.forms.get('answer10')
+
+	response1 = request.forms.get('question1')
+	response2 = request.forms.get('question2')
+	response3 = request.forms.get('question3')
+	response4 = request.forms.get('question4')
+	response5 = request.forms.get('question5')
+	response6 = request.forms.get('question6')
+	response7 = request.forms.get('question7')
+	response8 = request.forms.get('question8')
+	response9 = request.forms.get('question9')
+	response10 = request.forms.get('question10')
+
+	actor = request.cookies.get('account')
+	if not actor:
+		actor = 'test@test.com'
+
+	quiz_name = 'activity:qr_demo_%s_quiz' % partname
+
+	data = [{'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/attempted', 'display':{'en-US': 'attempted'}}, 'object':{'id':quiz_name}}]
+
+	resp1 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question1'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response1,'extensions': {'answer:correct_answer': answer1}}}
+	resp2 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question2'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response2,'extensions': {'answer:correct_answer': answer2}}}
+	resp3 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question3'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response3,'extensions': {'answer:correct_answer': answer3}}}
+	resp4 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question4'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response4,'extensions': {'answer:correct_answer': answer4}}}
+	resp5 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question5'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response5,'extensions': {'answer:correct_answer': answer5}}}
+	resp6 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question6'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response6,'extensions': {'answer:correct_answer': answer6}}}
+	resp7 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question7'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response7,'extensions': {'answer:correct_answer': answer7}}}
+	resp8 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question8'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response8,'extensions': {'answer:correct_answer': answer8}}}
+	resp9 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question9'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response9,'extensions': {'answer:correct_answer': answer9}}}
+	resp10 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+			'object':{'id':quiz_name + '_question10'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'result':{'success': True, 'response': response10,'extensions': {'answer:correct_answer': answer10}}}
+
+	wrong = 0
+	if answer1 != response1:
+		resp1['result']['success'] = False
+		wrong += 1
+	data.append(resp1)
+	
+	if answer2 != response2:
+		resp2['result']['success'] = False
+		wrong += 1
+	data.append(resp2)
+	
+	if answer3 != response3:
+		resp3['result']['success'] = False
+		wrong += 1
+	data.append(resp3)
+
+	if answer4 != response4:
+		resp4['result']['success'] = False
+		wrong += 1
+	data.append(resp4)
+
+	if answer5 != response5:
+		resp5['result']['success'] = False
+		wrong += 1
+	data.append(resp5)
+
+	if answer6 != response6:
+		resp6['result']['success'] = False
+		wrong += 1
+	data.append(resp6)
+
+	if answer7 != response7:
+		resp7['result']['success'] = False
+		wrong += 1
+	data.append(resp7)
+
+	if answer8 != response8:
+		resp8['result']['success'] = False
+		wrong += 1
+	data.append(resp8)
+
+	if answer9.split(',') != response9.split():
+		resp9['result']['success'] = False
+		wrong += 1
+	data.append(resp9)
+
+	if answer10.split(',') != response10.split():
+		resp10['result']['success'] = False
+		wrong += 1
+	data.append(resp10)
+
+	result_data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/passed', 'display':{'en-US': 'passed'}}, 'object':{'id':'activity:qr_demo_quiz'},
+		'result':{'score':{'raw': 10 - wrong}}}
+	
+	if wrong >= 6:
+		result_data['verb']['id'] = 'http://adlnet.gov/expapi/verbs/failed'
+		result_data['verb']['display']['en-US'] = 'failed'
+	data.append(result_data)
+
+	headers = {	
+			'Authorization': 'Basic dG9tOjEyMzQ=',
+			'content-type': 'application/json',	
+			'X-Experience-API-Version': '1.0.0'
+		}
+
+	post_resp = requests.post('https://lrs.adlnet.gov/XAPI/statements', data=json.dumps(data), headers=headers, verify=False)
+	print post_resp.status_code	
+	print post_resp.content
+
+	return """<p> Thanks for taking the quiz!!</p><br/><p><a href='/info/%s'>info</a></p>""" % partname
 
 @app.route('/makeqr')
 def form_qr():
@@ -63,7 +196,7 @@ def create_qr():
 
 	info_template_name = url_name + '_info.tpl'
 	with open('views/%s' % info_template_name, 'w+') as tpl:
-		tpl.write("<title>%s</title>\n<p>%s</p>\n<p><a href='/instructions/%s'>instructions</a></p>\n<p><a href='/quiz/%s'>quiz</a></p>\n<p><a href='/static/%s'>qrcode</a></p>" % (name, info, url_name, url_name, qrname))
+		tpl.write("<title>%s</title><p>%s</p>\n<p><a href='/instructions/%s'>instructions</a></p>\n<p><a href='/quiz/%s'>quiz</a></p>\n<p><a href='/static/%s'>qrcode</a></p>" % (name, info, url_name, url_name, qrname))
 
 	instruction_template_name = url_name + '_instructions.tpl'
 	with open('views/%s' % instruction_template_name, 'w+') as tpl:
@@ -99,18 +232,19 @@ def signout():
 	if acc_cookie:
 		response.set_cookie('account', '', expires=datetime.datetime.now())
 	redirect('/') 
+
 QUIZ_TEMPLATE = """<head>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript">
 		var data = [
-			{'type': 'choice', 'question': '', 'answers': [], 'correct': ''},
-			{'type':'true/false','question': '', 'answers': [], 'correct': ''},
-			{'type':'true/false','question': '', 'answers': [], 'correct': ''},
-			{'type':'choice','question': '', 'answers': [], 'correct': ''},
-			{'type': 'choice', 'question': '', 'answers': [], 'correct': ''},
-			{'type':'true/false','question': '', 'answers': [], 'correct': ''},
-			{'type':'true/false','question': '', 'answers': [], 'correct': ''},
-			{'type':'choice','question': '', 'answers': [], 'correct': ''},
+			{'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'choice','question': '', answers: [], 'correct': 0},
+			{'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'choice','question': '', 'answers': [], 'correct': 0},
 			{'type':'short answer','question': '', 'correct': []},
 			{'type':'short answer','question': '', 'correct': []}
 		];
@@ -123,73 +257,18 @@ QUIZ_TEMPLATE = """<head>
 					$.each(value['answers'], function(i, v){
 						$('#quiz').append('<input type="radio" name="' + ('question' + display_value) +'" value="'+ v +'">'+ v +'<br>')
 					});
+					$('#quiz').append('<input type="hidden" name="' + ('answer' + display_value) + '" value="' + value['correct'] + '">');
 				}
 				else{
 					$('#quiz').append('<tr><td>' + display_value + '.</td>' + '<td>' + value['question'] + '</td><td><input type="text" name="' + ('question' + display_value) + '"></td></tr>');
+					$('#quiz').append('<input type="hidden" name="' + ('answer' + display_value) + '" value="' + value['correct'] + '">');
 				}
 			});
 			$('#quiz').append('<input value="Submit when done!" type="submit" />')
 		});
-
-		function validateSubmit(obj){
-			var err = '';
-			answer1 = data[0]['correct']
-			answer2 = data[1]['correct'].toString();
-			answer3 = data[2]['correct'].toString();
-			answer4 = data[3]['correct']
-			answer5 = data[4]['correct']
-			answer6 = data[5]['correct'].toString();
-			answer7 = data[6]['correct'].toString();
-			answer8 = data[7]['correct']
-			answer9 = data[8]['correct']
-			answer10 = data[9]['correct']
-
-			question1 = $("input:radio[name='question1']:checked").val()
-			question2 = $("input:radio[name='question2']:checked").val()
-			question3 = $("input:radio[name='question3']:checked").val()
-			question4 = $("input:radio[name='question4']:checked").val()
-			question5 = $("input:radio[name='question5']:checked").val()
-			question6 = $("input:radio[name='question6']:checked").val()
-			question7 = $("input:radio[name='question7']:checked").val()
-			question8 = $("input:radio[name='question8']:checked").val()
-			question9 = $("input:text[name='question9']").val().split(/ +/)
-			question10 = $("input:text[name='question10']").val().split(/ +/)
-
-			if (question1 != answer1) {err = err+='\\nQuestion 1 is wrong. Answer is ' + answer1}
-			if (question2 != answer2) {err = err+='\\nQuestion 2 is wrong. Answer is ' + answer2}
-			if (question3 != answer3) {err = err+='\\nQuestion 3 is wrong. Answer is ' + answer3}
-			if (question4 != answer4) {err = err+='\\nQuestion 4 is wrong. Answer is ' + answer4}
-			if (question5 != answer5) {err = err+='\\nQuestion 5 is wrong. Answer is ' + answer5}
-			if (question6 != answer6) {err = err+='\\nQuestion 6 is wrong. Answer is ' + answer6}
-			if (question7 != answer7) {err = err+='\\nQuestion 7 is wrong. Answer is ' + answer7}
-			if (question8 != answer8) {err = err+='\\nQuestion 8 is wrong. Answer is ' + answer8}
-			
-			$.each(answer9, function(index, value){
-				if ($.inArray(value, question9) == -1){
-					err = err+='\\nQuestion 9 is wrong.'
-					return false;
-				}
-			});
-
-			$.each(answer10, function(index, value){
-				if ($.inArray(value, question10) == -1){
-					err = err+='\\nQuestion 10 is wrong.'
-					return false;
-				}
-			});
-
-			if (err.length){
-				alert('Problem:' + err);
-				return false;
-			}
-			else{
-				alert('Good Job');
-				return true;
-			}
-		}
 	</script>
 </head>
-<form onsubmit="return validateSubmit(this);" action="#" method="post" id="quiz">
+<form action="#" method="post" id="quiz">
 </form>"""
 
 run(app, server='gunicorn', host='localhost', port=8099, debug=True, reloader=True)
