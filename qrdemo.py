@@ -9,6 +9,89 @@ import json
 
 app = Bottle()
 
+INFO_DOMAIN = 'http://localhost:8099/info/'
+QUIZ_TEMPLATE = """<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+	<script type="text/javascript">
+		var data = [
+			{'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'choice','question': '', answers: [], 'correct': 0},
+			{'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
+			{'type':'choice','question': '', 'answers': [], 'correct': 0},
+			{'type':'short answer','question': '', 'correct': []},
+			{'type':'short answer','question': '', 'correct': []}
+		]
+
+		$(document).ready(function(){
+			var question_list = []
+			var rand_array = []
+			while(rand_array.length < 5){
+				var rand_num = Math.floor(Math.random()*10)
+				var found = false
+				for(i = 0; i < rand_array.length; i++){
+					if(rand_array[i] == rand_num){
+						found = true
+						break
+					}
+				}
+				if(!found)rand_array[rand_array.length] = rand_num;
+			}
+			$.each(rand_array, function(index, value){
+				question_list.push(data[value]);
+			});
+
+			$.each(question_list, function(index, value){
+				display_value = index + 1
+				$('#fg' + display_value).append('<label for="' + ('question' + display_value) +'">' + display_value + '. ' + value['question'] + '</label>');
+				if (value['type'] != 'short answer'){
+					$.each(value['answers'], function(i, v){
+						$('#fg' + display_value).append('<div class="radio" id="radioDiv' + display_value +'-' + (i + 1) + '"></div>');
+						$('#radioDiv' + display_value + '-' + (i + 1)).append('<label><input type="radio" name="' + ('question' + display_value) +'" value="'+ v +'">'+ v +'</label>')
+					});
+				}
+				else{
+					$('#fg' + display_value).append('<input class="form-control "type="text" name="' + ('question' + display_value) + '">');
+				}
+				$('#fg' + display_value).append('<input type="hidden" name="' + ('answer' + display_value) + '" value="' + value['correct'] + '">');
+				$('#fg' + display_value).append('<input type="hidden" name="' + ('type' + display_value) + '" value="' + value['type'] + '">');
+			});
+			$('#buttonDiv').append('<button type="submit" class="btn btn-default" action="#" method="post">Submit</button>')
+		});
+	</script>
+</head>
+<body>
+    <div class="jumbotron">
+		<div class="container">
+			<h1>Quiz</h1>
+	 		<form action="#" method="post" id="quiz" role="form">
+				<div class="form-group" id="fg1">
+				</div>
+				<div class="form-group" id="fg2">
+				</div>
+				<div class="form-group" id="fg3">
+				</div>
+				<div class="form-group" id="fg4">
+				</div>
+				<div class="form-group" id="fg5">
+				</div>
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10" id="buttonDiv">
+					</div>
+				</div>															
+			</form> 
+		</div>	
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>"""
+
 @app.route('/')
 def index():
 	mbox = request.cookies.account	
@@ -43,123 +126,110 @@ def get_quiz(partname):
 
 @app.route('/quiz/<partname>', method='POST')
 def get_quiz(partname):
-	err = '';
 	answer1 = request.forms.get('answer1')
 	answer2 = request.forms.get('answer2')
 	answer3 = request.forms.get('answer3')
 	answer4 = request.forms.get('answer4')
 	answer5 = request.forms.get('answer5')
-	answer6 = request.forms.get('answer6')
-	answer7 = request.forms.get('answer7')
-	answer8 = request.forms.get('answer8')
-	answer9 = request.forms.get('answer9')
-	answer10 = request.forms.get('answer10')
+	
+	type1 = request.forms.get('type1')
+	type2 = request.forms.get('type2')
+	type3 = request.forms.get('type3')
+	type4 = request.forms.get('type4')
+	type5 = request.forms.get('type5')
 
 	response1 = request.forms.get('question1')
 	response2 = request.forms.get('question2')
 	response3 = request.forms.get('question3')
 	response4 = request.forms.get('question4')
 	response5 = request.forms.get('question5')
-	response6 = request.forms.get('question6')
-	response7 = request.forms.get('question7')
-	response8 = request.forms.get('question8')
-	response9 = request.forms.get('question9')
-	response10 = request.forms.get('question10')
 
 	actor = request.cookies.get('account')
 	if not actor:
-		actor = 'test@test.com'
+		actor = 'mailto:test@test.com'
 
 	quiz_name = 'activity:qr_demo_%s_quiz' % partname
-
-	data = [{'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/attempted', 'display':{'en-US': 'attempted'}}, 'object':{'id':quiz_name}}]
+	display_name = urllib.unquote_plus(partname) + ' quiz'
+	data = [{'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/attempted', 'display':{'en-US': 'attempted'}}, 'object':{'id':quiz_name,
+		'definition':{'name':{'en-US':display_name}}}}]
 
 	resp1 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question1'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'object':{'id':quiz_name + '_question1', 'definition':{'name':{'en-US':display_name + ' question1'}}}, 
+			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response1,'extensions': {'answer:correct_answer': answer1}}}
 	resp2 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question2'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'object':{'id':quiz_name + '_question2', 'definition':{'name':{'en-US':display_name + ' question2'}}},
+			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response2,'extensions': {'answer:correct_answer': answer2}}}
 	resp3 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question3'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'object':{'id':quiz_name + '_question3', 'definition':{'name':{'en-US':display_name + ' question3'}}},
+			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response3,'extensions': {'answer:correct_answer': answer3}}}
 	resp4 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question4'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'object':{'id':quiz_name + '_question4', 'definition':{'name':{'en-US':display_name + ' question4'}}},
+			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response4,'extensions': {'answer:correct_answer': answer4}}}
 	resp5 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question5'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
+			'object':{'id':quiz_name + '_question5', 'definition':{'name':{'en-US':display_name + ' question5'}}},
+			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response5,'extensions': {'answer:correct_answer': answer5}}}
-	resp6 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question6'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
-			'result':{'success': True, 'response': response6,'extensions': {'answer:correct_answer': answer6}}}
-	resp7 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question7'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
-			'result':{'success': True, 'response': response7,'extensions': {'answer:correct_answer': answer7}}}
-	resp8 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question8'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
-			'result':{'success': True, 'response': response8,'extensions': {'answer:correct_answer': answer8}}}
-	resp9 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question9'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
-			'result':{'success': True, 'response': response9,'extensions': {'answer:correct_answer': answer9}}}
-	resp10 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-			'object':{'id':quiz_name + '_question10'}, 'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
-			'result':{'success': True, 'response': response10,'extensions': {'answer:correct_answer': answer10}}}
-
+	
+	err = '';
 	wrong = 0
-	if answer1 != response1:
-		resp1['result']['success'] = False
-		wrong += 1
+	if type1 != 'short answer':
+		if answer1 != response1:
+			resp1['result']['success'] = False
+			wrong += 1
+	else:
+		if not set(answer1.split(',')).issubset(response1.split()):
+			resp1['result']['success'] = False
+			wrong += 1			
 	data.append(resp1)
 	
-	if answer2 != response2:
-		resp2['result']['success'] = False
-		wrong += 1
+	if type2 != 'short answer':
+		if answer2 != response2:
+			resp2['result']['success'] = False
+			wrong += 1
+	else:
+		if not set(answer2.split(',')).issubset(response2.split()):
+			resp2['result']['success'] = False
+			wrong += 1			
 	data.append(resp2)
 	
-	if answer3 != response3:
-		resp3['result']['success'] = False
-		wrong += 1
+	if type3 != 'short answer':
+		if answer3 != response3:
+			resp3['result']['success'] = False
+			wrong += 1
+	else:
+		if not set(answer3.split(',')).issubset(response3.split()):
+			resp3['result']['success'] = False
+			wrong += 1			
 	data.append(resp3)
 
-	if answer4 != response4:
-		resp4['result']['success'] = False
-		wrong += 1
+	if type4 != 'short answer':
+		if answer4 != response4:
+			resp4['result']['success'] = False
+			wrong += 1
+	else:
+		if not set(answer4.split(',')).issubset(response4.split()):
+			resp4['result']['success'] = False
+			wrong += 1			
 	data.append(resp4)
 
-	if answer5 != response5:
-		resp5['result']['success'] = False
-		wrong += 1
+	if type5 != 'short answer':
+		if answer5 != response5:
+			resp5['result']['success'] = False
+			wrong += 1
+	else:
+		if not set(answer5.split(',')).issubset(response5.split()):
+			resp5['result']['success'] = False
+			wrong += 1			
 	data.append(resp5)
 
-	if answer6 != response6:
-		resp6['result']['success'] = False
-		wrong += 1
-	data.append(resp6)
-
-	if answer7 != response7:
-		resp7['result']['success'] = False
-		wrong += 1
-	data.append(resp7)
-
-	if answer8 != response8:
-		resp8['result']['success'] = False
-		wrong += 1
-	data.append(resp8)
-
-	if answer9.split(',') != response9.split():
-		resp9['result']['success'] = False
-		wrong += 1
-	data.append(resp9)
-
-	if answer10.split(',') != response10.split():
-		resp10['result']['success'] = False
-		wrong += 1
-	data.append(resp10)
-
-	result_data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/passed', 'display':{'en-US': 'passed'}}, 'object':{'id':'activity:qr_demo_quiz'},
-		'result':{'score':{'raw': 10 - wrong}}}
+	result_data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/passed', 'display':{'en-US': 'passed'}},
+		'object':{'id':'activity:qr_demo_quiz', 'definition':{'name':{'en-US':display_name + ' quiz'}}}, 'result':{'score':{'min': 0, 'max': 5, 'raw': 5 - wrong}}}
 	
-	if wrong >= 6:
+	if wrong >= 3:
 		result_data['verb']['id'] = 'http://adlnet.gov/expapi/verbs/failed'
 		result_data['verb']['display']['en-US'] = 'failed'
 	data.append(result_data)
@@ -173,8 +243,7 @@ def get_quiz(partname):
 	post_resp = requests.post('https://lrs.adlnet.gov/XAPI/statements', data=json.dumps(data), headers=headers, verify=False)
 	print post_resp.status_code	
 	print post_resp.content
-
-	return """<p> Thanks for taking the quiz!!</p><br/><p><a href='/info/%s'>info</a></p>""" % partname
+	return """<p> Thanks for taking the quiz!! View your results on the LRS</p><br/><p><a href='/info/%s'>info</a></p>""" % partname
 
 @app.route('/makeqr')
 def form_qr():
@@ -188,7 +257,7 @@ def create_qr():
 	info = request.forms.get('info')
 
 	qrname = url_name + '.png'
-	qrdata = 'http://localhost:8099/info/' + url_name
+	qrdata =  INFO_DOMAIN + url_name
 	img = qrcode.make(qrdata)
 	
 	with open('static/%s' % qrname, 'w+') as qr:
@@ -232,43 +301,5 @@ def signout():
 	if acc_cookie:
 		response.set_cookie('account', '', expires=datetime.datetime.now())
 	redirect('/') 
-
-QUIZ_TEMPLATE = """<head>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script type="text/javascript">
-		var data = [
-			{'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
-			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-			{'type':'choice','question': '', answers: [], 'correct': 0},
-			{'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
-			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-			{'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-			{'type':'choice','question': '', 'answers': [], 'correct': 0},
-			{'type':'short answer','question': '', 'correct': []},
-			{'type':'short answer','question': '', 'correct': []}
-		];
-
-		$(document).ready(function(){
-			$.each(data, function(index, value){
-				display_value = index + 1
-				if (value['type'] != 'short answer'){
-					$('#quiz').append('<tr><td>' + display_value + '.</td>' + '<td>' + value['question'] + '</td></tr>');
-					$.each(value['answers'], function(i, v){
-						$('#quiz').append('<input type="radio" name="' + ('question' + display_value) +'" value="'+ v +'">'+ v +'<br>')
-					});
-					$('#quiz').append('<input type="hidden" name="' + ('answer' + display_value) + '" value="' + value['correct'] + '">');
-				}
-				else{
-					$('#quiz').append('<tr><td>' + display_value + '.</td>' + '<td>' + value['question'] + '</td><td><input type="text" name="' + ('question' + display_value) + '"></td></tr>');
-					$('#quiz').append('<input type="hidden" name="' + ('answer' + display_value) + '" value="' + value['correct'] + '">');
-				}
-			});
-			$('#quiz').append('<input value="Submit when done!" type="submit" />')
-		});
-	</script>
-</head>
-<form action="#" method="post" id="quiz">
-</form>"""
 
 run(app, server='gunicorn', host='localhost', port=8099, debug=True, reloader=True)
