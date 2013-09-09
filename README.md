@@ -32,7 +32,7 @@ Run
 ### Question data example:
 ```
 var data = [
-	{'type': 'choice', 'question': 'Which one of these will not work in a fruit blender?', 'answers': ['banana', 'apple', 'screwdriver' ], 'correct': 'screwdriver},
+	{'type': 'choice', 'question': 'Which one of these will not work in a fruit blender?', 'answers': ['banana', 'apple', 'screwdriver' ], 'correct': 'screwdriver'},
 	{'type':'true/false','question': 'Most blenders blend fruit.', 'answers': [true, false], 'correct': true},
 	{'type':'true/false','question': 'This blender will blend meat.', 'answers': [true, false], 'correct': false},
 	{'type':'choice','question': 'How many speeds does this blender have?', answers: [1, 2, 3, 4, 5], 'correct': 4},
