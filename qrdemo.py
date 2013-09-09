@@ -2,7 +2,6 @@ from bottle import Bottle, run, route, request, response, static_file, template,
 import datetime
 import util
 import qrcode
-import pdb
 import urllib
 import requests
 import json
