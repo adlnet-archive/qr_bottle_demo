@@ -9,7 +9,7 @@
 			<div class="container">
 				<h2>Welcome</h2>
 				<p> You have been registered as {{mbox}} </p>
-				<p><a href="/makeqr">Create a qr code<a/></p>
+				<p><a href="/makeqr">Create QR Code<a/></p>
 		</div>
 		</div>
 	</body>

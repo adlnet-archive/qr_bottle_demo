@@ -1,6 +1,5 @@
 from bottle import Bottle, run, route, request, response, static_file, template, redirect
 import datetime
-import util
 import qrcode
 import urllib
 import requests
@@ -311,12 +310,9 @@ def create_qr():
 
 @app.route('/register', method='POST')
 def do_reg():
-	valid, mbox = util.validate_and_format_mbox(request.forms.get('mbox'))
-	if valid:
-		response.set_cookie('account', mbox)
-		return template('login_home', mbox=mbox)
-	else:
-		return template('login_fail')
+	mbox = request.forms.get('mbox')
+	response.set_cookie('account', mbox)
+	return template('login_home', mbox=mbox)
 
 @app.route('/signout')
 def signout():
