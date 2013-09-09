@@ -10,7 +10,7 @@
 				<h2>Welcome</h2>
 				<p> You have returned as {{mbox}} </p>
 				<p><a href="/signout">sign out</a></p>
-				<p><a href="/makeqr">create a qr code<a/></p>
+				<p><a href="/makeqr">Create QR Code<a/></p>
 		</div>
 		</div>
 	</body>
