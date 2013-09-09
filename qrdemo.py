@@ -69,7 +69,7 @@ QUIZ_TEMPLATE = """<html>
 <body>
     <div class="jumbotron">
 		<div class="container">
-			<h1>Quiz</h1>
+			<h1>{{partname}} Quiz</h1>
 	 		<form action="#" method="post" id="quiz" role="form">
 				<div class="form-group" id="fg1">
 				</div>
@@ -92,25 +92,58 @@ QUIZ_TEMPLATE = """<html>
 </body>
 </html>"""
 
+INSTRUCTION_TEMPLATE = """<html>
+<title>{0}</title>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+</head>
+<body>
+    <div class="jumbotron">
+		<div class="container">
+		<h2>{1}</h2>
+		<p>{2}</p>
+		<p><a href='/info/{3}'>info</a></p>
+		</div>	
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+"""
+INFO_TEMPLATE = """<html>
+<title>{0}</title>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+</head>
+<body>
+    <div class="jumbotron">
+		<div class="container">
+		<h2>{1}</h2>
+		<p>{2}</p>
+		<p><a href='/instructions/{3}'>instructions</a></p>
+		<p><a href='/quiz/{4}'>quiz</a></p>
+		<p><a href='/static/{5}'>qrcode</a></p>
+		</div>	
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+"""
+
 @app.route('/')
 def index():
 	mbox = request.cookies.account	
 	if mbox:
-		return template('returning.tpl', mbox=mbox)
+		return template('returning', mbox=mbox)
 	else:
-		return template('register.tpl')
+		return template('register')
 
 @app.route('/static/<filename>')
 def server_static(filename):
 	return static_file(filename, root='./static')
-
-@app.route('/css/<filename>')
-def server_css(filename):
-	return static_file(filename, root='./css')
-
-@app.route('/test')
-def test():
-	return template('test.tpl')
 
 @app.route('/info/<partname>')
 def get_info(partname):
@@ -122,7 +155,7 @@ def get_instructions(partname):
 
 @app.route('/quiz/<partname>', method='GET')
 def get_quiz(partname):
-	return template(partname + '_questions')
+	return template(partname + '_questions', partname=urllib.unquote_plus(partname))
 
 @app.route('/quiz/<partname>', method='POST')
 def get_quiz(partname):
@@ -243,7 +276,7 @@ def get_quiz(partname):
 	post_resp = requests.post('https://lrs.adlnet.gov/XAPI/statements', data=json.dumps(data), headers=headers, verify=False)
 	print post_resp.status_code	
 	print post_resp.content
-	return """<p> Thanks for taking the quiz!! View your results on the LRS</p><br/><p><a href='/info/%s'>info</a></p>""" % partname
+	return template('quiz_results', partname=partname)
 
 @app.route('/makeqr')
 def form_qr():
@@ -265,11 +298,11 @@ def create_qr():
 
 	info_template_name = url_name + '_info.tpl'
 	with open('views/%s' % info_template_name, 'w+') as tpl:
-		tpl.write("<title>%s</title><p>%s</p>\n<p><a href='/instructions/%s'>instructions</a></p>\n<p><a href='/quiz/%s'>quiz</a></p>\n<p><a href='/static/%s'>qrcode</a></p>" % (name, info, url_name, url_name, qrname))
+		tpl.write(INFO_TEMPLATE.format(name, name + ' Info', info, url_name, url_name, qrname))
 
 	instruction_template_name = url_name + '_instructions.tpl'
 	with open('views/%s' % instruction_template_name, 'w+') as tpl:
-		tpl.write("<title>%s</title>\n<p>%s</p>\n<p><a href='/info/%s'>info</a></p>" % (name, instructions, url_name))
+		tpl.write(INSTRUCTION_TEMPLATE.format(name, name + ' Instructions', instructions, url_name))
 
 	question_template_name = url_name + '_questions.tpl'
 	with open ('views/%s' % question_template_name, 'w+') as tpl:
@@ -277,22 +310,14 @@ def create_qr():
 
 	return redirect('/info/' + url_name)
 
-
 @app.route('/register', method='POST')
 def do_reg():
 	valid, mbox = util.validate_and_format_mbox(request.forms.get('mbox'))
 	if valid:
 		response.set_cookie('account', mbox)
-		return """<p>Ok. You are registered</p>
-		          <p><a href='/makeqr'>Create QR Codes</a></p>"""
+		return template('login_home', mbox=mbox)
 	else:
-		return '''<p>oh man, you fail</p>
-					<p> Enter an email address to record your actions</p>
-					<form action="/register" method="post">
-					   email: <input name="mbox" type="text" />
-					   <input value="Register" type="submit" />
-					</form>
-				'''
+		return template('login_fail')
 
 @app.route('/signout')
 def signout():

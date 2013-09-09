@@ -7,10 +7,9 @@
 	<body>
 		<div class="jumbotron">
 			<div class="container">
-				<h2>Welcome</h2>
-				<p> You have returned as {{mbox}} </p>
-				<p><a href="/signout">sign out</a></p>
-				<p><a href="/makeqr">create a qr code<a/></p>
+				<h2>Results</h2>
+				<p> Thanks for taking the quiz!! View your results on the LRS </p>
+				<p><a href='/info/{{partname}}'>info</a></p>
 		</div>
 		</div>
 	</body>
