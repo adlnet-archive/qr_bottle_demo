@@ -8,9 +8,12 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h2>Welcome</h2>
-				<p> You have returned as {{mbox}} </p>
+				<p> Hello {{mbox}} </p>
 				<p><a href="/signout">sign out</a></p>
-				<p><a href="/makeqr">Create QR Code<a/></p>
+				<p><a href="/makeqr">Create QR</a/></p>
+				% for page in pages:
+					<p><a href="/info/{{page.values()[0]}}">{{page.keys()[0]}}</a></p>
+				% end
 		</div>
 		</div>
 	</body>
