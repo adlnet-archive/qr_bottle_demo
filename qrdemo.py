@@ -175,7 +175,7 @@ def get_quiz(partname):
 	response4 = request.forms.get('question4')
 	response5 = request.forms.get('question5')
 
-	actor = request.cookies.get('account')
+	actor = 'mailto:' + request.cookies.get('account')
 	if not actor:
 		actor = 'mailto:test@test.com'
 
