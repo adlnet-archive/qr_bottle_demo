@@ -264,7 +264,7 @@ def get_quiz(partname):
 	data.append(resp5)
 
 	result_data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/passed', 'display':{'en-US': 'passed'}},
-		'object':{'id':'activity:qr_demo_quiz', 'definition':{'name':{'en-US':display_name + ' quiz'}}}, 'result':{'score':{'min': 0, 'max': 5, 'raw': 5 - wrong}}}
+		'object':{'id':quiz_name, 'definition':{'name':{'en-US':display_name}}}, 'result':{'score':{'min': 0, 'max': 5, 'raw': 5 - wrong}}}
 	
 	if wrong >= 3:
 		result_data['verb']['id'] = 'http://adlnet.gov/expapi/verbs/failed'
