@@ -335,8 +335,4 @@ def signout():
 		response.set_cookie('account', '', expires=datetime.datetime.now())
 	redirect('/') 
 
-# if __name__ == "__main__":
-# 	run(host='localhost', port=8099)
-
-
 run(app, server='gunicorn', host='localhost', port=8099, debug=True, reloader=True)
