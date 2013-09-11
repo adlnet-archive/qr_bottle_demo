@@ -151,6 +151,11 @@ def server_static(filename):
 
 @app.route('/info/<partname>')
 def get_info(partname):
+	try:
+		request.cookies.get('account')
+	except Exception, e:
+		redirect('/')
+
 	return template(partname + '_info')
 
 @app.route('/instructions/<partname>')
@@ -181,10 +186,11 @@ def get_quiz(partname):
 	response4 = request.forms.get('question4')
 	response5 = request.forms.get('question5')
 
-	actor = 'mailto:' + request.cookies.get('account')
-	if not actor:
+	try:
+		actor = 'mailto:' + request.cookies.get('account')
+	except Exception, e:
 		actor = 'mailto:test@test.com'
-
+	
 	quiz_name = 'activity:qr_demo_%s_quiz' % partname
 	display_name = urllib.unquote_plus(partname) + ' quiz'
 	data = [{'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/attempted', 'display':{'en-US': 'attempted'}}, 'object':{'id':quiz_name,
@@ -318,6 +324,8 @@ def create_qr():
 @app.route('/register', method='POST')
 def do_reg():
 	mbox = request.forms.get('mbox')
+	if not mbox:
+		mbox = 'test@test.com'
 	response.set_cookie('account', mbox)
 
 	pages = []
