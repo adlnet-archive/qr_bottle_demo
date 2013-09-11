@@ -4,6 +4,7 @@ import qrcode
 import urllib
 import requests
 import json
+import os
 
 app = Bottle()
 
@@ -124,6 +125,7 @@ INFO_TEMPLATE = """<html>
 		<p><a href='/instructions/{3}'>instructions</a></p>
 		<p><a href='/quiz/{4}'>quiz</a></p>
 		<p><a href='/static/{5}'>qrcode</a></p>
+		<p><a href='/'>home</a></p>
 		</div>	
 </div>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -135,7 +137,11 @@ INFO_TEMPLATE = """<html>
 def index():
 	mbox = request.cookies.account	
 	if mbox:
-		return template('returning', mbox=mbox)
+		pages = []
+		for root, dirs, filenames in os.walk('static'):
+			for f in filenames:
+				pages.append({urllib.unquote_plus(f[:-4]): f[:-4]})		
+		return template('returning', mbox=mbox, pages=pages)
 	else:
 		return template('register')
 
@@ -175,7 +181,7 @@ def get_quiz(partname):
 	response4 = request.forms.get('question4')
 	response5 = request.forms.get('question5')
 
-	actor = request.cookies.get('account')
+	actor = 'mailto:' + request.cookies.get('account')
 	if not actor:
 		actor = 'mailto:test@test.com'
 
@@ -272,9 +278,10 @@ def get_quiz(partname):
 		}
 
 	post_resp = requests.post('https://lrs.adlnet.gov/XAPI/statements', data=json.dumps(data), headers=headers, verify=False)
-	print post_resp.status_code	
-	print post_resp.content
-	return template('quiz_results', partname=partname)
+	status = post_resp.status_code
+	content = json.loads(post_resp.content)
+
+	return template('quiz_results', partname=partname, status=status, content=content)
 
 @app.route('/makeqr')
 def form_qr():
@@ -312,7 +319,13 @@ def create_qr():
 def do_reg():
 	mbox = request.forms.get('mbox')
 	response.set_cookie('account', mbox)
-	return template('login_home', mbox=mbox)
+
+	pages = []
+	for root, dirs, filenames in os.walk('static'):
+		for f in filenames:
+			pages.append({urllib.unquote_plus(f[:-4]): f[:-4]})
+
+	return template('returning', mbox=mbox, pages=pages)
 
 @app.route('/signout')
 def signout():
