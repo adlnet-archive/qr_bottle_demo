@@ -151,9 +151,7 @@ def server_static(filename):
 
 @app.route('/info/<partname>')
 def get_info(partname):
-	try:
-		request.cookies.get('account')
-	except Exception, e:
+	if not request.cookies.get('account'):
 		redirect('/')
 
 	return template(partname + '_info')
