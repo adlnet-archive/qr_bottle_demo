@@ -18,7 +18,7 @@ Setup the environment
 
 Run
 
-	python qrdemo.py
+	supervisord
 	
 ## Use
 
