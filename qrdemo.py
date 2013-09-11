@@ -278,9 +278,10 @@ def get_quiz(partname):
 		}
 
 	post_resp = requests.post('https://lrs.adlnet.gov/XAPI/statements', data=json.dumps(data), headers=headers, verify=False)
-	print post_resp.status_code	
-	print post_resp.content
-	return template('quiz_results', partname=partname)
+	status = post_resp.status_code
+	content = json.loads(post_resp.content)
+
+	return template('quiz_results', partname=partname, status=status, content=content)
 
 @app.route('/makeqr')
 def form_qr():
@@ -333,5 +334,9 @@ def signout():
 	if acc_cookie:
 		response.set_cookie('account', '', expires=datetime.datetime.now())
 	redirect('/') 
+
+# if __name__ == "__main__":
+# 	run(host='localhost', port=8099)
+
 
 run(app, server='gunicorn', host='localhost', port=8099, debug=True, reloader=True)
