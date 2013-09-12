@@ -1,2 +1,5 @@
 *.pyc
 *.png
+*_questions.tpl
+*_info.tpl
+*_instructions.tpl
