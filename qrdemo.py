@@ -9,6 +9,7 @@ import os
 app = Bottle()
 
 INFO_DOMAIN = 'http://localhost:8099/info/'
+LRS_STATEMENT_ENDPOINT = 'https://lrs.adlnet.gov/XAPI/statements'
 QUIZ_TEMPLATE = """<html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,11 +53,11 @@ QUIZ_TEMPLATE = """<html>
 				if (value['type'] != 'short answer'){
 					$.each(value['answers'], function(i, v){
 						$('#fg' + display_value).append('<div class="radio" id="radioDiv' + display_value +'-' + (i + 1) + '"></div>');
-						$('#radioDiv' + display_value + '-' + (i + 1)).append('<label><input type="radio" name="' + ('question' + display_value) +'" value="'+ v +'">'+ v +'</label>')
+						$('#radioDiv' + display_value + '-' + (i + 1)).append('<label><input type="radio" name="' + ('question' + display_value) +'" value="'+ v +'" required>'+ v +'</label>')
 					});
 				}
 				else{
-					$('#fg' + display_value).append('<input class="form-control "type="text" name="' + ('question' + display_value) + '">');
+					$('#fg' + display_value).append('<input class="form-control "type="text" name="' + ('question' + display_value) + '" required>');
 				}
 				$('#fg' + display_value).append('<input type="hidden" name="' + ('answer' + display_value) + '" value="' + value['correct'] + '">');
 				$('#fg' + display_value).append('<input type="hidden" name="' + ('type' + display_value) + '" value="' + value['type'] + '">');
@@ -270,7 +271,7 @@ def get_quiz(partname):
 	result_data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/passed', 'display':{'en-US': 'passed'}},
 		'object':{'id':quiz_name, 'definition':{'name':{'en-US':display_name}}}, 'result':{'score':{'min': 0, 'max': 5, 'raw': 5 - wrong}}}
 	
-	if wrong >= 3:
+	if wrong > 2:
 		result_data['verb']['id'] = 'http://adlnet.gov/expapi/verbs/failed'
 		result_data['verb']['display']['en-US'] = 'failed'
 	data.append(result_data)
@@ -281,11 +282,23 @@ def get_quiz(partname):
 			'X-Experience-API-Version': '1.0.0'
 		}
 
-	post_resp = requests.post('https://lrs.adlnet.gov/XAPI/statements', data=json.dumps(data), headers=headers, verify=False)
+	post_resp = requests.post(LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=headers, verify=False)
 	status = post_resp.status_code
-	content = json.loads(post_resp.content)
+	content = post_resp.content
 
-	return template('quiz_results', partname=partname, status=status, content=content)
+	if status == 200:
+		content = json.loads(post_resp.content)		
+		st1 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[0], headers=headers, verify=False).content
+		st2 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[1], headers=headers, verify=False).content
+		st3 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[2], headers=headers, verify=False).content
+		st4 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[3], headers=headers, verify=False).content
+		st5 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[4], headers=headers, verify=False).content
+		st6 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[5], headers=headers, verify=False).content
+		st7 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[6], headers=headers, verify=False).content
+	else:
+		st1 = st2 = st3 = st4 = st5 = st6 = st7 = ""
+
+	return template('quiz_results', partname=partname, status=status, score=(5 - wrong), content=content, st1=st1, st2=st2, st3=st3, st4=st4, st5=st5, st6=st6, st7=st7)
 
 @app.route('/makeqr')
 def form_qr():
@@ -322,8 +335,6 @@ def create_qr():
 @app.route('/register', method='POST')
 def do_reg():
 	mbox = request.forms.get('mbox')
-	if not mbox:
-		mbox = 'test@test.com'
 	response.set_cookie('account', mbox)
 
 	pages = []

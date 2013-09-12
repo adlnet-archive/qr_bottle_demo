@@ -13,7 +13,7 @@
 				   <div class="form-group">
 				   	<label for="mbox" class="col-lg-2 control-label">Name</label>
 				   	<div class="col-lg-10">
-				   		<input name="mbox" type="email" class="form-control" placeholder="Enter email">
+				   		<input name="mbox" type="email" class="form-control" placeholder="Enter email" required>
 				   	</div>
 				   </div>
 				   <div class="form-group">
