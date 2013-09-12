@@ -27,7 +27,7 @@ Run
 3. When the information gets submitted, the system creates info, instruction, and questions templates for the device. (If you submit a device with the same name as one that exists already, all existing templates will be overwritten.)
 4. Inside of a text editor, open the '<device name>_questions.tpl' file and find the 'data' dictionary in the script at the top of the page.
 5. There are three types of questions; type, true/false, and short answer. Type the question you want to ask inside of the questions field, and supply the answers (can be either string or numerical) in the answers field. Then supply the correct answer from the answers list in the 'correct' field.
-6. Short answer questions are evaluated to see if the user's reponse has ALL of the words in the 'correct' field listed their response.
+6. Short answer questions are evaluated to see if the user's reponse has ALL of the words in the 'correct' field listed their response (so it is case and puncuation sensitive).
 
 ### Question data example:
 ```
@@ -48,4 +48,5 @@ var data = [
 Five questions are chosen randomly each time to be displayed. If the user misses three or more questions, they fail the quiz; and all results are written to the LRS.
 
 
-If you want to change the endpoint the QR codes point to when scanning them, change the INFO_DOMAIN constant at the top of the qrdemo.py file.
+If you want to change the endpoint the QR codes point to when scanning them, change the INFO_DOMAIN constant at the top of the qrdemo.py file. So goes for the LRS
+endpoint. If you want to change it, just edit the LRS_STATEMENT_ENDPOINT constant at the top of the qrdemo.py file.
