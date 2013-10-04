@@ -48,5 +48,5 @@ var data = [
 Five questions are chosen randomly each time to be displayed. If the user misses three or more questions, they fail the quiz; and all results are written to the LRS.
 
 
-If you want to change the endpoint the QR codes point to when scanning them, change the INFO_DOMAIN constant at the top of the qrdemo.py file. So goes for the LRS
-endpoint. If you want to change it, just edit the LRS_STATEMENT_ENDPOINT constant at the top of the qrdemo.py file.
+If you want to change the endpoint the QR codes point to when scanning them, change the INFO_DOMAIN constant at the top of the qrdemo.py file. Same goes for the LRS
+endpoint. If you want to change it, just edit the LRS_STATEMENT_ENDPOINT constant at the top of the qrdemo.py file then change your username and password (ENDPOINT_AUTH_USERNAME and ENDPOINT_AUTH_PASSWORD).
