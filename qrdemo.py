@@ -5,11 +5,16 @@ import urllib
 import requests
 import json
 import os
+import base64
 
 app = Bottle()
 
-INFO_DOMAIN = 'http://localhost:8099/info/'
-LRS_STATEMENT_ENDPOINT = 'https://lrs.adlnet.gov/XAPI/statements'
+INFO_DOMAIN = 'http://some/domain/info/'
+LRS_STATEMENT_ENDPOINT = 'https://some/LRS/endpoint/statements'
+ENDPOINT_AUTH_USERNAME = 'username'	
+ENDPOINT_AUTH_PASSWORD = 'password'
+AUTHORIZATION = "Basic %s" % base64.b64encode("%s:%s" % (ENDPOINT_AUTH_USERNAME, ENDPOINT_AUTH_PASSWORD))
+
 QUIZ_TEMPLATE = """<html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -277,7 +282,7 @@ def get_quiz(partname):
 	data.append(result_data)
 
 	headers = {	
-			'Authorization': 'Basic dG9tOjEyMzQ=',
+			'Authorization': AUTHORIZATION,
 			'content-type': 'application/json',	
 			'X-Experience-API-Version': '1.0.0'
 		}
