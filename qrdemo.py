@@ -9,11 +9,17 @@ import base64
 
 app = Bottle()
 
-INFO_DOMAIN = 'http://some/domain/info/'
-LRS_STATEMENT_ENDPOINT = 'https://some/LRS/endpoint/statements'
-ENDPOINT_AUTH_USERNAME = 'username'	
+INFO_DOMAIN = 'http://some/domain'
+CREATE_PASSWORD = 'password'
+LRS_STATEMENT_ENDPOINT = 'https://some/lrs/statements'
+ENDPOINT_AUTH_USERNAME = 'username'
 ENDPOINT_AUTH_PASSWORD = 'password'
 AUTHORIZATION = "Basic %s" % base64.b64encode("%s:%s" % (ENDPOINT_AUTH_USERNAME, ENDPOINT_AUTH_PASSWORD))
+HEADERS = {	
+		'Authorization': AUTHORIZATION,
+		'content-type': 'application/json',	
+		'X-Experience-API-Version': '1.0.0'
+	}
 
 QUIZ_TEMPLATE = """<html>
 <head>
@@ -116,6 +122,7 @@ INSTRUCTION_TEMPLATE = """<html>
 </body>
 </html>
 """
+
 INFO_TEMPLATE = """<html>
 <title>{0}</title>
 <head>
@@ -160,14 +167,34 @@ def get_info(partname):
 	if not request.cookies.get('account'):
 		redirect('/')
 
+	actor = 'mailto:' + request.cookies.get('account')
+	display_name = urllib.unquote_plus(partname)
+
+	data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/visited', 'display':{'en-US': 'visited'}}, 'object':{'id': INFO_DOMAIN + '/info/' + partname,
+		'definition':{'name':{'en-US':display_name + ' info page'}}}}
+	post_resp = requests.post(LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=HEADERS, verify=False)
+
 	return template(partname + '_info')
 
 @app.route('/instructions/<partname>')
 def get_instructions(partname):
+	if not request.cookies.get('account'):
+		redirect('/')
+
+	actor = 'mailto:' + request.cookies.get('account')
+	display_name = urllib.unquote_plus(partname)
+
+	data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/visited', 'display':{'en-US': 'visited'}}, 'object':{'id': INFO_DOMAIN + '/instructions/' + partname,
+		'definition':{'name':{'en-US':display_name + ' instructions page'}}}}
+	post_resp = requests.post(LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=HEADERS, verify=False)
+
 	return template(partname + '_instructions')
 
 @app.route('/quiz/<partname>', method='GET')
 def get_quiz(partname):
+	if not request.cookies.get('account'):
+		redirect('/')
+
 	return template(partname + '_questions', partname=urllib.unquote_plus(partname))
 
 @app.route('/quiz/<partname>', method='POST')
@@ -177,7 +204,7 @@ def get_quiz(partname):
 	answer3 = request.forms.get('answer3')
 	answer4 = request.forms.get('answer4')
 	answer5 = request.forms.get('answer5')
-	
+
 	type1 = request.forms.get('type1')
 	type2 = request.forms.get('type2')
 	type3 = request.forms.get('type3')
@@ -190,11 +217,9 @@ def get_quiz(partname):
 	response4 = request.forms.get('question4')
 	response5 = request.forms.get('question5')
 
-	try:
-		actor = 'mailto:' + request.cookies.get('account')
-	except Exception, e:
-		actor = 'mailto:test@test.com'
+	actor = 'mailto:' + request.cookies.get('account')
 	
+
 	quiz_name = 'activity:qr_demo_%s_quiz' % partname
 	display_name = urllib.unquote_plus(partname) + ' quiz'
 	data = [{'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/attempted', 'display':{'en-US': 'attempted'}}, 'object':{'id':quiz_name,
@@ -228,7 +253,7 @@ def get_quiz(partname):
 			resp1['result']['success'] = False
 			wrong += 1
 	else:
-		if not set(answer1.split(',')).issubset(response1.split()):
+		if not set(answer1.split(',')).issubset([str(i).lower().strip() for i in response1.split(",")]):
 			resp1['result']['success'] = False
 			wrong += 1			
 	data.append(resp1)
@@ -238,7 +263,7 @@ def get_quiz(partname):
 			resp2['result']['success'] = False
 			wrong += 1
 	else:
-		if not set(answer2.split(',')).issubset(response2.split()):
+		if not set(answer2.split(',')).issubset([str(i).lower().strip() for i in response2.split(",")]):
 			resp2['result']['success'] = False
 			wrong += 1			
 	data.append(resp2)
@@ -248,7 +273,7 @@ def get_quiz(partname):
 			resp3['result']['success'] = False
 			wrong += 1
 	else:
-		if not set(answer3.split(',')).issubset(response3.split()):
+		if not set(answer3.split(',')).issubset([str(i).lower().strip() for i in response3.split(",")]):
 			resp3['result']['success'] = False
 			wrong += 1			
 	data.append(resp3)
@@ -258,7 +283,7 @@ def get_quiz(partname):
 			resp4['result']['success'] = False
 			wrong += 1
 	else:
-		if not set(answer4.split(',')).issubset(response4.split()):
+		if not set(answer4.split(',')).issubset([str(i).lower().strip() for i in response4.split(",")]):
 			resp4['result']['success'] = False
 			wrong += 1			
 	data.append(resp4)
@@ -268,7 +293,7 @@ def get_quiz(partname):
 			resp5['result']['success'] = False
 			wrong += 1
 	else:
-		if not set(answer5.split(',')).issubset(response5.split()):
+		if not set(answer5.split(',')).issubset([str(i).lower().strip() for i in response5.split(",")]):
 			resp5['result']['success'] = False
 			wrong += 1			
 	data.append(resp5)
@@ -281,25 +306,19 @@ def get_quiz(partname):
 		result_data['verb']['display']['en-US'] = 'failed'
 	data.append(result_data)
 
-	headers = {	
-			'Authorization': AUTHORIZATION,
-			'content-type': 'application/json',	
-			'X-Experience-API-Version': '1.0.0'
-		}
-
-	post_resp = requests.post(LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=headers, verify=False)
+	post_resp = requests.post(LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=HEADERS, verify=False)
 	status = post_resp.status_code
 	content = post_resp.content
 
 	if status == 200:
 		content = json.loads(post_resp.content)		
-		st1 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[0], headers=headers, verify=False).content
-		st2 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[1], headers=headers, verify=False).content
-		st3 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[2], headers=headers, verify=False).content
-		st4 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[3], headers=headers, verify=False).content
-		st5 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[4], headers=headers, verify=False).content
-		st6 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[5], headers=headers, verify=False).content
-		st7 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[6], headers=headers, verify=False).content
+		st1 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[0], headers=HEADERS, verify=False).content
+		st2 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[1], headers=HEADERS, verify=False).content
+		st3 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[2], headers=HEADERS, verify=False).content
+		st4 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[3], headers=HEADERS, verify=False).content
+		st5 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[4], headers=HEADERS, verify=False).content
+		st6 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[5], headers=HEADERS, verify=False).content
+		st7 = requests.get(LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[6], headers=HEADERS, verify=False).content
 	else:
 		st1 = st2 = st3 = st4 = st5 = st6 = st7 = ""
 
@@ -307,7 +326,10 @@ def get_quiz(partname):
 
 @app.route('/makeqr')
 def form_qr():
-	return template('makeqr.tpl')
+	if not request.cookies.get('account'):
+		redirect('/')
+
+	return template('makeqr.tpl', pw=CREATE_PASSWORD)
 
 @app.route('/makeqr', method='POST')
 def create_qr():
