@@ -3,6 +3,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="//code.jquery.com/jquery.js"></script>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+		<script type="text/javascript">
+	  		$(document).ready(function(){
+				$('body').hide();
+				var not_validated = true;
+				password = prompt('Please enter password to create pages and quiz');
+				while (not_validated){
+					if (password=='{{pw}}'){
+						not_validated = false;
+						$('body').show();
+					}
+					else{
+						password = prompt('Please enter password to create pages and quiz');
+					}
+				}
+	  		});
+  		</script>
 	</head>
 	<body>
 		<div class="jumbotron">
