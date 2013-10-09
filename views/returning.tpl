@@ -8,7 +8,7 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h2>Welcome</h2>
-				<p> Hello {{mbox}} </p>
+				<p> Hello {{name}} ({{mbox}}) </p>
 				<p><a href="/signout">sign out</a></p>
 				<p><a href="/makeqr">Create QR</a/></p>
 				% for page in pages:

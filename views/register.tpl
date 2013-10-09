@@ -8,12 +8,18 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h2>Register</h2>
-				<p> You are not signed in. Please enter an email address to record your actions </p>
+				<p> You are not signed in. Please enter an email address and name to record your actions </p>
 				<form action="/register" method="post" role="form" class="form-horizontal">
 				   <div class="form-group">
-				   	<label for="mbox" class="col-lg-2 control-label">Name</label>
+				   	<label for="mbox" class="col-lg-2 control-label">Email</label>
 				   	<div class="col-lg-10">
 				   		<input name="mbox" type="email" class="form-control" placeholder="Enter email" required>
+				   	</div>
+				   </div>
+				   <div class="form-group">
+				   	<label for="name" class="col-lg-2 control-label">Name</label>
+				   	<div class="col-lg-10">
+				   		<input name="name" type="text" class="form-control" placeholder="Enter name" required>
 				   	</div>
 				   </div>
 				   <div class="form-group">
