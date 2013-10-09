@@ -148,13 +148,14 @@ INFO_TEMPLATE = """<html>
 
 @app.route('/')
 def index():
-	mbox = request.cookies.account	
-	if mbox:
+	mbox = request.cookies.account
+	name = request.cookies.name
+	if mbox and name:
 		pages = []
 		for root, dirs, filenames in os.walk('static'):
 			for f in filenames:
 				pages.append({urllib.unquote_plus(f[:-4]): f[:-4]})		
-		return template('returning', mbox=mbox, pages=pages)
+		return template('returning', mbox=mbox, name=name, pages=pages)
 	else:
 		return template('register')
 
@@ -164,13 +165,14 @@ def server_static(filename):
 
 @app.route('/info/<partname>')
 def get_info(partname):
-	if not request.cookies.get('account'):
+	if not request.cookies.get('account') or not request.cookies.get('name'):
 		redirect('/')
 
 	actor = 'mailto:' + request.cookies.get('account')
+	actor_name = request.cookies.get('name')
 	display_name = urllib.unquote_plus(partname)
 
-	data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/visited', 'display':{'en-US': 'visited'}}, 'object':{'id': INFO_DOMAIN + '/info/' + partname,
+	data = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/visited', 'display':{'en-US': 'visited'}}, 'object':{'id': INFO_DOMAIN + '/info/' + partname,
 		'definition':{'name':{'en-US':display_name + ' info page'}}}}
 	post_resp = requests.post(LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=HEADERS, verify=False)
 
@@ -178,13 +180,14 @@ def get_info(partname):
 
 @app.route('/instructions/<partname>')
 def get_instructions(partname):
-	if not request.cookies.get('account'):
+	if not request.cookies.get('account') or not request.cookies.get('name'):
 		redirect('/')
 
 	actor = 'mailto:' + request.cookies.get('account')
+	actor_name = request.cookies.get('name')	
 	display_name = urllib.unquote_plus(partname)
 
-	data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/visited', 'display':{'en-US': 'visited'}}, 'object':{'id': INFO_DOMAIN + '/instructions/' + partname,
+	data = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/visited', 'display':{'en-US': 'visited'}}, 'object':{'id': INFO_DOMAIN + '/instructions/' + partname,
 		'definition':{'name':{'en-US':display_name + ' instructions page'}}}}
 	post_resp = requests.post(LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=HEADERS, verify=False)
 
@@ -192,7 +195,7 @@ def get_instructions(partname):
 
 @app.route('/quiz/<partname>', method='GET')
 def get_quiz(partname):
-	if not request.cookies.get('account'):
+	if not request.cookies.get('account') or not request.cookies.get('name'):
 		redirect('/')
 
 	return template(partname + '_questions', partname=urllib.unquote_plus(partname))
@@ -218,30 +221,30 @@ def get_quiz(partname):
 	response5 = request.forms.get('question5')
 
 	actor = 'mailto:' + request.cookies.get('account')
-	
+	actor_name = request.cookies.get('name')
 
 	quiz_name = 'activity:qr_demo_%s_quiz' % partname
 	display_name = urllib.unquote_plus(partname) + ' quiz'
-	data = [{'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/attempted', 'display':{'en-US': 'attempted'}}, 'object':{'id':quiz_name,
+	data = [{'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/attempted', 'display':{'en-US': 'attempted'}}, 'object':{'id':quiz_name,
 		'definition':{'name':{'en-US':display_name}}}}]
 
-	resp1 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+	resp1 = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
 			'object':{'id':quiz_name + '_question1', 'definition':{'name':{'en-US':display_name + ' question1'}}}, 
 			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response1,'extensions': {'answer:correct_answer': answer1}}}
-	resp2 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+	resp2 = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
 			'object':{'id':quiz_name + '_question2', 'definition':{'name':{'en-US':display_name + ' question2'}}},
 			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response2,'extensions': {'answer:correct_answer': answer2}}}
-	resp3 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+	resp3 = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
 			'object':{'id':quiz_name + '_question3', 'definition':{'name':{'en-US':display_name + ' question3'}}},
 			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response3,'extensions': {'answer:correct_answer': answer3}}}
-	resp4 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+	resp4 = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
 			'object':{'id':quiz_name + '_question4', 'definition':{'name':{'en-US':display_name + ' question4'}}},
 			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response4,'extensions': {'answer:correct_answer': answer4}}}
-	resp5 = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
+	resp5 = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
 			'object':{'id':quiz_name + '_question5', 'definition':{'name':{'en-US':display_name + ' question5'}}},
 			'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
 			'result':{'success': True, 'response': response5,'extensions': {'answer:correct_answer': answer5}}}
@@ -298,7 +301,7 @@ def get_quiz(partname):
 			wrong += 1			
 	data.append(resp5)
 
-	result_data = {'actor': {'mbox': actor}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/passed', 'display':{'en-US': 'passed'}},
+	result_data = {'actor': {'mbox': actor, 'name': actor_name}, 'verb': {'id': 'http://adlnet.gov/expapi/verbs/passed', 'display':{'en-US': 'passed'}},
 		'object':{'id':quiz_name, 'definition':{'name':{'en-US':display_name}}}, 'result':{'score':{'min': 0, 'max': 5, 'raw': 5 - wrong}}}
 	
 	if wrong > 2:
@@ -326,7 +329,7 @@ def get_quiz(partname):
 
 @app.route('/makeqr')
 def form_qr():
-	if not request.cookies.get('account'):
+	if not request.cookies.get('account') or not request.cookies.get('name'):
 		redirect('/')
 
 	return template('makeqr.tpl', pw=CREATE_PASSWORD)
@@ -362,21 +365,27 @@ def create_qr():
 @app.route('/register', method='POST')
 def do_reg():
 	mbox = request.forms.get('mbox')
+	name = request.forms.get('name')
 	response.set_cookie('account', mbox)
+	response.set_cookie('name', name)
 
 	pages = []
 	for root, dirs, filenames in os.walk('static'):
 		for f in filenames:
 			pages.append({urllib.unquote_plus(f[:-4]): f[:-4]})
 
-	return template('returning', mbox=mbox, pages=pages)
+	return template('returning', mbox=mbox, name=name, pages=pages)
 
 @app.route('/signout')
 def signout():
 	# figure out how to delete a cookie
 	acc_cookie = request.cookies.get('account', None)
+	name_cookie = request.cookies.get('name', None)
 	if acc_cookie:
 		response.set_cookie('account', '', expires=datetime.datetime.now())
+	if name_cookie:
+		response.set_cookie('name', '', expires=datetime.datetime.now())
+	
 	redirect('/') 
 
 run(app, server='gunicorn', host='localhost', port=8099, debug=True, reloader=True)
