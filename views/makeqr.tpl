@@ -5,23 +5,31 @@
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
 		<script type="text/javascript">
 	  		$(document).ready(function(){
-				$('body').hide();
 				var not_validated = true;
-				password = prompt('Please enter password to create pages and quiz');
-				while (not_validated){
-					if (password=='{{pw}}'){
-						not_validated = false;
-						$('body').show();
+				var password = "";
+				$('#bigform').hide();
+
+				$( "#target" ).submit(function( event ) {
+					if ($("#passwordbox").val() == '{{pw}}'){			 				  	
+						$('#bigform').show();
+						$('#dialog').hide();						
 					}
 					else{
-						password = prompt('Please enter password to create pages and quiz');
+						alert("Wrong-try again.")
 					}
-				}
+				  	event.preventDefault();
+				});
 	  		});
   		</script>
 	</head>
 	<body>
-		<div class="jumbotron">
+		<div id="dialog" title="Enter a password">
+			<form id="target" action="">
+  				Password: <input type="password" id="passwordbox">
+  				<input type="submit" value="Go">
+			</form>
+		</div>
+		<div class="jumbotron" id="bigform">
 			<div class="container">
 				<h2>Enter data for QR code</h2>
 				<form action="/makeqr" method="post" role="form" class="form-horizontal">

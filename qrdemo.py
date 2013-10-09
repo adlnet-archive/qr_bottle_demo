@@ -9,7 +9,7 @@ import base64
 
 app = Bottle()
 
-INFO_DOMAIN = 'http://some/domain'
+INFO_DOMAIN = 'http://some/domain/info'
 CREATE_PASSWORD = 'password'
 LRS_STATEMENT_ENDPOINT = 'https://some/lrs/statements'
 ENDPOINT_AUTH_USERNAME = 'username'
