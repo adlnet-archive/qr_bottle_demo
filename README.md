@@ -7,6 +7,16 @@ make changes and submit pull requests. If you're not comfortable
 with editing the code, please submit an issue and we'll be happy 
 to address it. 
 
+## Background
+
+The original idea of the QR generator was to help machinists in a shop easily provide information and instructions about particular pieces of equipment on a mobile device.
+When a user logs into the system and creates an information and instructions page, the QR code is generated automatially with all of this information so it can easily be retrieved on any device.
+Additionally, a Quiz page is created if the user wants to give a quiz on the information they just supplied. The quiz results are sent to the LRS and are
+displayed at the end of it.
+
+This obviously doesn't have to be limited to information and instructions on devices (you can make only quizzes if you want) and is different from the other client side examples
+ADL has provided [here](https://github.com/adlnet/experienceapi_client_examples). All of the information sent and received is on the server this time, using the Python requests library; no javascrip involved.
+
 ## Installation
 
 #### Installation tested on Ubuntu 12.10 machine with Python 2.7.3
@@ -62,7 +72,7 @@ HEADERS = {
 
 ### Question data example from the questions template:
 
-```JavaScript
+```
 var data = [
 	{'type': 'choice', 'question': 'Which one of these will not work in a fruit blender?', 'answers': ['banana', 'apple', 'screwdriver' ], 'correct': 'screwdriver'},
 	{'type':'true/false','question': 'Most blenders blend fruit.', 'answers': [true, false], 'correct': true},
