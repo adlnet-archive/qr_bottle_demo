@@ -1,25 +1,37 @@
 qr_bottle_demo
 ==============
 
-#### Installation tested on Ubuntu 12.10 machine with Python 2.7.3
+## Contributing to the project
+We welcome contributions to this project. Fork this repository, 
+make changes and submit pull requests. If you're not comfortable 
+with editing the code, please submit an issue and we'll be happy 
+to address it. 
 
 ## Installation
 
-Software Installation
+#### Installation tested on Ubuntu 12.10 machine with Python 2.7.3
 
-    sudo apt-get install git fabric
-    sudo easy_install pip
-    sudo pip install virtualenv
+###Software Installation
 
-Setup the environment
+```shell
+sudo apt-get install git fabric
+sudo easy_install pip
+sudo pip install virtualenv
+```
 
-    fab setup_env
-    source ../qrenv/bin/activate
+###Setup the environment
 
-Run
+```shell
+fab setup_env
+source ../qrenv/bin/activate
+```
 
-	supervisord
-	
+###Run
+
+```shell
+supervisord
+```	
+
 ## Use
 
 1. At the main page, sign in with a valid email address (it's just stored as a cookie)
@@ -29,8 +41,9 @@ Run
 5. There are three types of questions; type, true/false, and short answer. Type the question you want to ask inside of the questions field, and supply the answers (can be either string or numerical) in the answers field. Then supply the correct answer from the answers list in the 'correct' field.
 6. Short answer questions are evaluated to see if the user's reponse has ALL of the words in the 'correct' field listed their response so you're gonna want to keep it simple.
 
-### Question data example:
-```
+### Question data example from the questions template:
+
+```JavaScript
 var data = [
 	{'type': 'choice', 'question': 'Which one of these will not work in a fruit blender?', 'answers': ['banana', 'apple', 'screwdriver' ], 'correct': 'screwdriver'},
 	{'type':'true/false','question': 'Most blenders blend fruit.', 'answers': [true, false], 'correct': true},
@@ -47,6 +60,21 @@ var data = [
 
 Five questions are chosen randomly each time to be displayed. If the user misses three or more questions, they fail the quiz; and all results are written to the LRS. Whenever a user visits either an /info or /instructions page, it will also be recorded to the LRS.
 
+## Configuration
 
-If you want to change the endpoint the QR codes point to when scanning them, change the INFO_DOMAIN constant at the top of the qrdemo.py file. Same goes for the LRS
-endpoint. If you want to change it, just edit the LRS_STATEMENT_ENDPOINT constant at the top of the qrdemo.py file then change your username and password (ENDPOINT_AUTH_USERNAME and ENDPOINT_AUTH_PASSWORD). Creating the templates and QR code is also protected. To change the password, change the CREATE_PASSWORD constant in qrdemo.py.
+### qrdemo.py
+Change these constants for LRS endpoints, passwords, and domains
+
+```Python
+INFO_DOMAIN = 'http://some/domain/info' #QR code domain to use when created codes
+CREATE_PASSWORD = 'password' #Password for people to create QR codes
+LRS_STATEMENT_ENDPOINT = 'https://lrs.adlnet.gov/xapi/statements' #LRS statement endpoint
+ENDPOINT_AUTH_USERNAME = 'username' #LRS username
+ENDPOINT_AUTH_PASSWORD = 'password' #LRS password
+AUTHORIZATION = "Basic %s" % base64.b64encode("%s:%s" % (ENDPOINT_AUTH_USERNAME, ENDPOINT_AUTH_PASSWORD))
+HEADERS = {        
+                'Authorization': AUTHORIZATION,
+                'content-type': 'application/json',        
+                'X-Experience-API-Version': '1.0.0'
+        }
+```
