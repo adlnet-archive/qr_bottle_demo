@@ -7,14 +7,9 @@
 	<body>
 		<div class="jumbotron">
 			<div class="container">
-				<h2>Welcome</h2>
-				<p> Hello {{name}} ({{mbox}}) </p>
-				<p><a href="/signout">sign out</a></p>
-				<p><a href="/makeqr">Create QR</a/></p>
-				% for page in pages:
-					<p><a href="/quiz/{{page.values()[0]}}">{{page.keys()[0]}}</a></p>
-				% end
-		</div>
+				<h2>Try Again</h2>
+				<p>Sorry, there is already existing information about that topic.</p>
+				<p><a href="/makeqr">Try Again</a/></p>
 		</div>
 	</body>
 </html>
