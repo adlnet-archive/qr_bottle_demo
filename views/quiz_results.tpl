@@ -1,8 +1,9 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="//code.jquery.com/jquery.js"></script>
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+	    <script src="//code.jquery.com/jquery.js"></script>
+	    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+	    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
 		<script type="text/javascript">
 	  		$(document).ready(function(){
 		        $('#st1').html("<pre>" + JSON.stringify({{!st1}}, null, 4) + "</pre>");
@@ -12,6 +13,14 @@
 		        $('#st5').html("<pre>" + JSON.stringify({{!st5}}, null, 4) + "</pre>");
 		        $('#st6').html("<pre>" + JSON.stringify({{!st6}}, null, 4) + "</pre>");
 		        $('#st7').html("<pre>" + JSON.stringify({{!st7}}, null, 4) + "</pre>");
+
+		        $('#sen1').html("{{sen1}}");
+		        $('#sen2').html("{{sen2}}");
+		        $('#sen3').html("{{sen3}}");
+		        $('#sen4').html("{{sen4}}");
+		        $('#sen5').html("{{sen5}}");
+		        $('#sen6').html("{{sen6}}");
+		        $('#sen7').html("{{sen7}}");
 	  		});
 	  	</script>
 	</head>
@@ -21,7 +30,7 @@
 				<h2>Results</h2>
                 % if status != 200:
             	<p>Something went wrong with POSTing the quiz results to the LRS.</p>
-            	<p>{{status}} - {{content}}</p>
+            	<p>{{status}} - {{content}}</p>				
                 % else:
             	<p> Thanks for taking the quiz!! You scored {{score}} out of 5</p>
                 % if score > 3:
@@ -29,16 +38,110 @@
                 % else:
             	<p style="color:red">Sorry, you failed the quiz. Study harder next time</p>
                 % end
-                <p id="st1"></p>
-                <p id="st2"></p>
-                <p id="st3"></p>
-                <p id="st4"></p>
-                <p id="st5"></p>
-                <p id="st6"></p>
-                <p id="st7"></p>
+				<div class="panel-group" id="accordion">
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" id="sen1">
+				          
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseOne" class="panel-collapse collapse in">
+				      <div class="panel-body" id="st1">
+				        
+				      </div>
+				    </div>
+				  </div>
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" id="sen2">
+				          
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseTwo" class="panel-collapse collapse">
+				      <div class="panel-body" id="st2">
+				        
+				      </div>
+				    </div>
+				  </div>
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" id="sen3">
+				          
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseThree" class="panel-collapse collapse">
+				      <div class="panel-body" id="st3">
+				        
+				      </div>
+				    </div>
+				  </div>
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" id="sen4">
+				          
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseFour" class="panel-collapse collapse">
+				      <div class="panel-body" id="st4">
+				        
+				      </div>
+				    </div>
+				  </div>
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" id="sen5">
+				          
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseFive" class="panel-collapse collapse">
+				      <div class="panel-body" id="st5">
+				        
+				      </div>
+				    </div>
+				  </div>
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" id="sen6">
+				          
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseSix" class="panel-collapse collapse">
+				      <div class="panel-body" id="st6">
+				        
+				      </div>
+				    </div>
+				  </div>
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" id="sen7">
+				          
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseSeven" class="panel-collapse collapse">
+				      <div class="panel-body" id="st7">				        
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</div>
                 % end
             	<p><a href='/info/{{partname}}'>info</a></p>
-			</div>
+
+
 		</div>
 	</body>
 </html>

@@ -17,6 +17,10 @@ def index():
         return redirect('/home')
     return redirect('/register')
 
+@app.route('/test')
+def test():
+    return template('test')
+
 @app.route('/home')
 def home():
     mbox = request.cookies.account
@@ -135,19 +139,15 @@ def get_quiz(partname):
     status = post_resp.status_code
     content = post_resp.content
 
-    if status == 200:
-            content = json.loads(post_resp.content)                
-            st1 = requests.get(settings.LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[0], headers=settings.HEADERS, verify=False).content
-            st2 = requests.get(settings.LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[1], headers=settings.HEADERS, verify=False).content
-            st3 = requests.get(settings.LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[2], headers=settings.HEADERS, verify=False).content
-            st4 = requests.get(settings.LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[3], headers=settings.HEADERS, verify=False).content
-            st5 = requests.get(settings.LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[4], headers=settings.HEADERS, verify=False).content
-            st6 = requests.get(settings.LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[5], headers=settings.HEADERS, verify=False).content
-            st7 = requests.get(settings.LRS_STATEMENT_ENDPOINT + '?statementId=%s' % content[6], headers=settings.HEADERS, verify=False).content                                                                    
-    else:
-            st1 = st2 = st3 = st4 = st5 = st6 = st7 = ""
+    stmts, sens = util.retrieve_statements(status, content)    
 
-    return template('quiz_results', partname=partname, status=status, score=(5 - wrong), content=content, st1=st1, st2=st2, st3=st3, st4=st4, st5=st5, st6=st6, st7=st7)
+    if stmts:
+        return template('quiz_results', partname=partname, status=status, score=(5 - wrong), content=content, st1=stmts[0], st2=stmts[1], st3=stmts[2], st4=stmts[3], st5=stmts[4],
+            st6=stmts[5], st7=stmts[6], sen1=sens[0], sen2=sens[1], sen3=sens[2], sen4=sens[3], sen5=sens[4], sen6=sens[5], sen7=sens[6])
+    else:
+        return template('quiz_results', partname=partname, status=status, score=(5 - wrong), content=content, st1="", st2="", st3="", st4="", st5="",
+            st6="", st7="", sen1="", sen2="", sen3="", sen4="", sen5="", sen6="", sen7="")
+
 
 @app.route('/makeqr')
 def form_qr():
