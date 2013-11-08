@@ -7,12 +7,12 @@
 	  		$(document).ready(function(){
 				var not_validated = true;
 				var password = "";
-				$('#bigform').hide();
+				$('#createform').hide();
 
 				$( "#target" ).submit(function( event ) {
 					if ($("#passwordbox").val() == '{{pw}}'){			 				  	
-						$('#bigform').show();
-						$('#dialog').hide();						
+						$('#createform').show();
+						$('#passwordform').hide();			
 					}
 					else{
 						alert("Wrong-try again.")
@@ -23,14 +23,23 @@
   		</script>
 	</head>
 	<body>
-		<div id="dialog" title="Enter a password">
-			<form id="target" action="">
-  				Password: <input type="password" id="passwordbox">
-  				<input type="submit" value="Go">
-			</form>
-		</div>
-		<div class="jumbotron" id="bigform">
-			<div class="container">
+		<div class="jumbotron">
+			<div id="passwordform" title="Enter a password" class="container">
+				<form id="target" action="" class="form-horizontal">
+					<div class="form-group">
+						<label for="name" class="col-lg-2 control-label">Password</label>
+					   	<div class="col-lg-10">
+					   		<input id="passwordbox" type="password" class="form-control">
+					   	</div>
+					</div>  				
+				   <div class="form-group">
+				   	<div class="col-lg-offset-2 col-lg-10">
+				   		<button type="submit" class="btn btn-default">Go</button>
+				   	</div>
+				   </div>
+				</form>
+			</div>
+			<div class="container" id="createform">
 				<h2>Enter data for QR code</h2>
 				<form action="/makeqr" method="post" role="form" class="form-horizontal">
 				   <div class="form-group">
@@ -58,7 +67,7 @@
 				   </div>				
 				</form>
 				<a href='/'>Home</a>
-		</div>
+			</div>
 		</div>
 	</body>
 </html>

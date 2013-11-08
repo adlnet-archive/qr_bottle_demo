@@ -9,7 +9,7 @@
 			<div class="container">
 				<h2>Register</h2>
 				<p> You are not signed in. Please enter an email address and name to record your actions </p>
-				<form action="/register" method="post" role="form" class="form-horizontal">
+				<form action="/home" method="post" role="form" class="form-horizontal">
 				   <div class="form-group">
 				   	<label for="mbox" class="col-lg-2 control-label">Email</label>
 				   	<div class="col-lg-10">
@@ -28,7 +28,6 @@
 				   	</div>
 				   </div>				   		
 				</form>
-				<a href='/'>Home</a>
 		</div>
 		</div>
 	</body>
