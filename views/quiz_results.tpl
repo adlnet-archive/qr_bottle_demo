@@ -6,21 +6,16 @@
 	    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
 		<script type="text/javascript">
 	  		$(document).ready(function(){
-		        $('#st1').html("<pre>" + JSON.stringify({{!st1}}, null, 4) + "</pre>");
-		        $('#st2').html("<pre>" + JSON.stringify({{!st2}}, null, 4) + "</pre>");
-		        $('#st3').html("<pre>" + JSON.stringify({{!st3}}, null, 4) + "</pre>");
-		        $('#st4').html("<pre>" + JSON.stringify({{!st4}}, null, 4) + "</pre>");
-		        $('#st5').html("<pre>" + JSON.stringify({{!st5}}, null, 4) + "</pre>");
-		        $('#st6').html("<pre>" + JSON.stringify({{!st6}}, null, 4) + "</pre>");
-		        $('#st7').html("<pre>" + JSON.stringify({{!st7}}, null, 4) + "</pre>");
-
-		        $('#sen1').html("{{sen1}}");
-		        $('#sen2').html("{{sen2}}");
-		        $('#sen3').html("{{sen3}}");
-		        $('#sen4').html("{{sen4}}");
-		        $('#sen5').html("{{sen5}}");
-		        $('#sen6').html("{{sen6}}");
-		        $('#sen7').html("{{sen7}}");
+				$.each({{!stmts}}, function(index, value){
+					display_value = index + 1
+					//Needed b/c of funky encoding when passing data
+					value_obj = JSON.parse(value)
+	  				$('#st' + display_value).html("<pre>" + JSON.stringify(value_obj, null, 4) + "</pre>");						
+				});
+				$.each({{!sens}}, function(index, value){
+					display_value = index + 1
+	  				$('#sen' + display_value).html(value);						
+				});
 	  		});
 	  	</script>
 	</head>

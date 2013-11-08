@@ -17,10 +17,6 @@ def index():
         return redirect('/home')
     return redirect('/register')
 
-@app.route('/test')
-def test():
-    return template('test')
-
 @app.route('/home')
 def home():
     mbox = request.cookies.account
@@ -141,13 +137,7 @@ def get_quiz(partname):
 
     stmts, sens = util.retrieve_statements(status, content)    
 
-    if stmts:
-        return template('quiz_results', partname=partname, status=status, score=(5 - wrong), content=content, st1=stmts[0], st2=stmts[1], st3=stmts[2], st4=stmts[3], st5=stmts[4],
-            st6=stmts[5], st7=stmts[6], sen1=sens[0], sen2=sens[1], sen3=sens[2], sen4=sens[3], sen5=sens[4], sen6=sens[5], sen7=sens[6])
-    else:
-        return template('quiz_results', partname=partname, status=status, score=(5 - wrong), content=content, st1="", st2="", st3="", st4="", st5="",
-            st6="", st7="", sen1="", sen2="", sen3="", sen4="", sen5="", sen6="", sen7="")
-
+    return template('quiz_results', partname=partname, status=status, score=(5 - wrong), content=content, stmts=stmts, sens=sens)
 
 @app.route('/makeqr')
 def form_qr():
