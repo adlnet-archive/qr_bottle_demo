@@ -17,7 +17,12 @@
 				  	event.preventDefault();
 				});
 
-				$("input:radio[name=types1]").change(function(){
+				//make sure on initial load boxes are checked and displaying inputs
+				for (i=1; i<11; i++){
+					processCHFields(i)
+				}
+
+				$("input:radio[name=types1]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -31,7 +36,7 @@
 							break;
 					}
 				});
-				$("input:radio[name=types2]").change(function(){
+				$("input:radio[name=types2]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -45,7 +50,7 @@
 							break;
 					}
 				});
-				$("input:radio[name=types3]").change(function(){
+				$("input:radio[name=types3]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -59,7 +64,7 @@
 							break;
 					}
 				});					  		
-				$("input:radio[name=types4]").change(function(){
+				$("input:radio[name=types4]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -73,7 +78,7 @@
 							break;
 					}
 				});					  		
-				$("input:radio[name=types5]").change(function(){
+				$("input:radio[name=types5]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -87,7 +92,7 @@
 							break;
 					}
 				});					  		
-				$("input:radio[name=types6]").change(function(){
+				$("input:radio[name=types6]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -101,7 +106,7 @@
 							break;
 					}
 				});					  		
-				$("input:radio[name=types7]").change(function(){
+				$("input:radio[name=types7]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -115,7 +120,7 @@
 							break;
 					}
 				});					  		
-				$("input:radio[name=types8]").change(function(){
+				$("input:radio[name=types8]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -129,7 +134,7 @@
 							break;
 					}
 				});					  		
-				$("input:radio[name=types9]").change(function(){
+				$("input:radio[name=types9]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -143,7 +148,7 @@
 							break;
 					}
 				});					  		
-				$("input:radio[name=types10]").change(function(){
+				$("input:radio[name=types10]").click(function(){
 					var q_type = $(this).val()
 					switch (q_type){
 						case 'choice':
@@ -163,25 +168,25 @@
 				$("#question" + num + "tfgroup").hide();
 				$("#question" + num + "sagroup").hide();
 				$("#question" + num + "chgroup").html('')
-				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control" required></div></div')
-				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'choices') + '" class="col-lg-2 control-label">Q' + num + ' Choices</label><div class="col-lg-10"><input name="' + ('question' + num + 'choices') + '" type="text" class="form-control" required></div></div>')
-				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control" required></div></div>')
+				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control"></div></div')
+				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'choices') + '" class="col-lg-2 control-label">Q' + num + ' Choices</label><div class="col-lg-10"><input name="' + ('question' + num + 'choices') + '" type="text" class="form-control"></div></div>')
+				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control"></div></div>')
 				$("#question" + num + "chgroup").show()
 			}
 			function processTFFields(num){
 				$("#question" + num + "chgroup").hide();
 				$("#question" + num + "sagroup").hide();
 				$("#question" + num + "tfgroup").html('')
-				$("#question" + num + "tfgroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control" required></div></div>')
-				$("#question" + num + "tfgroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control" required></div></div>')
+				$("#question" + num + "tfgroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control"></div></div>')
+				$("#question" + num + "tfgroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control"></div></div>')
 				$("#question" + num + "tfgroup").show()
 			}
 			function processSAFields(num){
 				$("#question" + num + "tfgroup").hide();
 				$("#question" + num + "chgroup").hide();
 				$("#question" + num + "sagroup").html('')
-				$("#question" + num + "sagroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control" required></div></div>')
-				$("#question" + num + "sagroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control" required></div></div>')
+				$("#question" + num + "sagroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control"></div></div>')
+				$("#question" + num + "sagroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control"></div></div>')
 				$("#question" + num + "sagroup").show()
 			}
   		</script>
@@ -205,7 +210,7 @@
 			</div>
 			<div class="container" id="createform">
 				<h2>Enter data for QR code</h2>
-				<form action="/makeqr" method="post" role="form" class="form-horizontal">
+				<form action="/makeqr" method="post" role="form" class="form-horizontal" id="qrform">
 				   <div class="form-group">
 				   	<label for="name" class="col-lg-2 control-label">Name</label>
 				   	<div class="col-lg-10">
@@ -228,7 +233,7 @@
 				   	<label for="question1" class="col-lg-2 control-label">Q1 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types1" type="radio" value="choice">choice
+		   					<input name="types1" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types1" type="radio" value="true/false">true/false
 		   					<br>
@@ -236,14 +241,14 @@
 				   		</div>
 				   	</div>
 				   </div>
-				   <div class="form-group" id="question1chgroup"></div>
+				   <div class="form-group" id="question1chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question1tfgroup"></div>
 				   <div class="form-group" id="question1sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question2" class="col-lg-2 control-label">Q2 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types2" type="radio" value="choice">choice
+		   					<input name="types2" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types2" type="radio" value="true/false">true/false
 		   					<br>
@@ -251,14 +256,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question2chgroup"></div>
+				   <div class="form-group" id="question2chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question2tfgroup"></div>
 				   <div class="form-group" id="question2sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question3" class="col-lg-2 control-label">Q3 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types3" type="radio" value="choice">choice
+		   					<input name="types3" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types3" type="radio" value="true/false">true/false
 		   					<br>
@@ -266,14 +271,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question3chgroup"></div>
+				   <div class="form-group" id="question3chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question3tfgroup"></div>
 				   <div class="form-group" id="question3sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question4" class="col-lg-2 control-label">Q4 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types4" type="radio" value="choice">choice
+		   					<input name="types4" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types4" type="radio" value="true/false">true/false
 		   					<br>
@@ -281,14 +286,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question4chgroup"></div>
+				   <div class="form-group" id="question4chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question4tfgroup"></div>
 				   <div class="form-group" id="question4sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question5" class="col-lg-2 control-label">Q5 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types5" type="radio" value="choice">choice
+		   					<input name="types5" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types5" type="radio" value="true/false">true/false
 		   					<br>
@@ -296,14 +301,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question5chgroup"></div>
+				   <div class="form-group" id="question5chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question5tfgroup"></div>
 				   <div class="form-group" id="question5sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question6" class="col-lg-2 control-label">Q6 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types6" type="radio" value="choice">choice
+		   					<input name="types6" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types6" type="radio" value="true/false">true/false
 		   					<br>
@@ -311,14 +316,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question6chgroup"></div>
+				   <div class="form-group" id="question6chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question6tfgroup"></div>
 				   <div class="form-group" id="question6sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question7" class="col-lg-2 control-label">Q7 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types7" type="radio" value="choice">choice
+		   					<input name="types7" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types7" type="radio" value="true/false">true/false
 		   					<br>
@@ -326,14 +331,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question7chgroup"></div>
+				   <div class="form-group" id="question7chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question7tfgroup"></div>
 				   <div class="form-group" id="question7sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question8" class="col-lg-2 control-label">Q8 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types8" type="radio" value="choice">choice
+		   					<input name="types8" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types8" type="radio" value="true/false">true/false
 		   					<br>
@@ -341,14 +346,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question8chgroup"></div>
+				   <div class="form-group" id="question8chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question8tfgroup"></div>
 				   <div class="form-group" id="question8sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question9" class="col-lg-2 control-label">Q9 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types9" type="radio" value="choice">choice
+		   					<input name="types9" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types9" type="radio" value="true/false">true/false
 		   					<br>
@@ -356,14 +361,14 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question9chgroup"></div>
+				   <div class="form-group" id="question9chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question9tfgroup"></div>
 				   <div class="form-group" id="question9sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question10" class="col-lg-2 control-label">Q10 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types10" type="radio" value="choice">choice
+		   					<input name="types10" type="radio" value="choice" checked="checked">choice
 		   					<br>
 		   					<input name="types10" type="radio" value="true/false">true/false
 		   					<br>
@@ -371,7 +376,7 @@
 				   		</div>
 				   	</div>
 				   </div>				   
-				   <div class="form-group" id="question10chgroup"></div>
+				   <div class="form-group" id="question10chgroup" style="display: block;"></div>
 				   <div class="form-group" id="question10tfgroup"></div>
 				   <div class="form-group" id="question10sagroup"></div>
 				   
