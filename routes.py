@@ -159,6 +159,8 @@ def create_qr():
     instructions = request.forms.get('instructions')
     info = request.forms.get('info')
 
+    data = json.dumps(util.create_questions(request.forms), indent=4)
+
     qrname = url_name + '.png'
     qrdata =  settings.INFO_DOMAIN + url_name
     img = qrcode.make(qrdata)
@@ -176,7 +178,7 @@ def create_qr():
 
     question_template_name = url_name + '_questions.tpl'
     with open ('views/%s' % question_template_name, 'w+') as tpl:
-            tpl.write(settings.QUIZ_TEMPLATE)
+            tpl.write(settings.QUIZ_TEMPLATE % data)
     return redirect('/info/' + url_name)  
 
 @app.route('/tryagain')
