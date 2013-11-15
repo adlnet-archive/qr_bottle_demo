@@ -76,7 +76,7 @@ def grade_results(types, answers, responses, data):
             data[1]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[0].split(',')).issubset([str(i).lower().strip() for i in responses[0].split(" ")]):
+        if not set(answers[0].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[0].split(" ")]):
             data[1]['result']['success'] = False
             wrong += 1
     
@@ -85,7 +85,7 @@ def grade_results(types, answers, responses, data):
             data[2]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[1].split(',')).issubset([str(i).lower().strip() for i in responses[1].split(" ")]):
+        if not set(answers[1].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[1].split(" ")]):
             data[2]['result']['success'] = False
             wrong += 1
     
@@ -94,7 +94,7 @@ def grade_results(types, answers, responses, data):
             data[3]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[2].split(',')).issubset([str(i).lower().strip() for i in responses[2].split(" ")]):
+        if not set(answers[2].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[2].split(" ")]):
             data[3]['result']['success'] = False
             wrong += 1
 
@@ -103,7 +103,7 @@ def grade_results(types, answers, responses, data):
             data[4]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[3].split(',')).issubset([str(i).lower().strip() for i in responses[3].split(" ")]):
+        if not set(answers[3].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[3].split(" ")]):
             data[4]['result']['success'] = False
             wrong += 1
 
@@ -112,7 +112,7 @@ def grade_results(types, answers, responses, data):
             data[5]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[4].split(',')).issubset([str(i).lower().strip() for i in responses[4].split(" ")]):
+        if not set(answers[4].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[4].split(" ")]):
             data[5]['result']['success'] = False
             wrong += 1
     return wrong, data
