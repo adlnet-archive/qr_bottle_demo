@@ -72,48 +72,68 @@ def get_result_statements(responses, answers, types, questions, actor, actor_nam
 
 def grade_results(types, answers, responses, data):
     wrong = 0
-    if types[0] != 'short answer':
+    if types[0] == 'true/false':
         if answers[0] != responses[0]:
             data[1]['result']['success'] = False
             wrong += 1
+    elif types[0] == 'choice':
+        if answers[0].strip() != responses[0].strip():
+            data[1]['result']['success'] = False
+            wrong += 1
     else:
-        if not set(answers[0].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[0].split(",")]):
+        if not set(answers[0].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[0].split(" ")]):
             data[1]['result']['success'] = False
             wrong += 1
     
-    if types[1] != 'short answer':
-        if answers[1] != responses[1]:
-            data[2]['result']['success'] = False
+    if types[0] == 'true/false':
+        if answers[0] != responses[0]:
+            data[1]['result']['success'] = False
+            wrong += 1
+    elif types[0] == 'choice':
+        if answers[0].strip() != responses[0].strip():
+            data[1]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[1].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[1].split(",")]):
+        if not set(answers[1].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[1].split(" ")]):
             data[2]['result']['success'] = False
             wrong += 1
     
-    if types[2] != 'short answer':
-        if answers[2] != responses[2]:
-            data[3]['result']['success'] = False
+    if types[0] == 'true/false':
+        if answers[0] != responses[0]:
+            data[1]['result']['success'] = False
+            wrong += 1
+    elif types[0] == 'choice':
+        if answers[0].strip() != responses[0].strip():
+            data[1]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[2].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[2].split(",")]):
+        if not set(answers[2].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[2].split(" ")]):
             data[3]['result']['success'] = False
             wrong += 1
 
-    if types[3] != 'short answer':
-        if answers[3] != responses[3]:
-            data[4]['result']['success'] = False
+    if types[0] == 'true/false':
+        if answers[0] != responses[0]:
+            data[1]['result']['success'] = False
+            wrong += 1
+    elif types[0] == 'choice':
+        if answers[0].strip() != responses[0].strip():
+            data[1]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[3].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[3].split(",")]):
+        if not set(answers[3].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[3].split(" ")]):
             data[4]['result']['success'] = False
             wrong += 1
 
-    if types[4] != 'short answer':
-        if answers[4] != responses[4]:
-            data[5]['result']['success'] = False
+    if types[0] == 'true/false':
+        if answers[0] != responses[0]:
+            data[1]['result']['success'] = False
+            wrong += 1
+    elif types[0] == 'choice':
+        if answers[0].strip() != responses[0].strip():
+            data[1]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[4].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[4].split(",")]):
+        if not set(answers[4].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[4].split(" ")]):
             data[5]['result']['success'] = False
             wrong += 1
     return wrong, data
@@ -164,7 +184,7 @@ def create_questions(form):
             q_dict['answers'] = [True, False]
         else:
             q_dict['correct'] = form.get('question' + st_i + 'answer')
-            q_dict['answers'] = form.get('question' + st_i + 'choices').split(' ')
+            q_dict['answers'] = form.get('question' + st_i + 'choices').strip().split(',')
 
         data.append(q_dict)
     return data
