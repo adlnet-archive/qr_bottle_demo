@@ -105,32 +105,15 @@ def get_quiz(partname):
             redirect('/register')
 
     questions = []
-    questions.append(request.forms.get('questionasked1'))
-    questions.append(request.forms.get('questionasked2'))
-    questions.append(request.forms.get('questionasked3'))
-    questions.append(request.forms.get('questionasked4'))
-    questions.append(request.forms.get('questionasked5'))
-
     answers = []
-    answers.append(request.forms.get('answer1'))
-    answers.append(request.forms.get('answer2'))
-    answers.append(request.forms.get('answer3'))
-    answers.append(request.forms.get('answer4'))
-    answers.append(request.forms.get('answer5'))
-
     types = []
-    types.append(request.forms.get('type1'))
-    types.append(request.forms.get('type2'))
-    types.append(request.forms.get('type3'))
-    types.append(request.forms.get('type4'))
-    types.append(request.forms.get('type5'))
-
     responses = []
-    responses.append(request.forms.get('question1'))
-    responses.append(request.forms.get('question2'))
-    responses.append(request.forms.get('question3'))
-    responses.append(request.forms.get('question4'))
-    responses.append(request.forms.get('question5'))
+
+    for x in range(1,6):
+        questions.append(request.forms.get('questionasked' + str(x)))
+        answers.append(request.forms.get('answer' + str(x)))
+        types.append(request.forms.get('type' + str(x)))
+        responses.append(request.forms.get('question' + str(x)))
 
     actor = 'mailto:' + request.cookies.get('account')
     actor_name = request.cookies.get('name')
