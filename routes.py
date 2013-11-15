@@ -104,6 +104,13 @@ def get_quiz(partname):
     if not request.cookies.get('account') or not request.cookies.get('name'):
             redirect('/register')
 
+    questions = []
+    questions.append(request.forms.get('questionasked1'))
+    questions.append(request.forms.get('questionasked2'))
+    questions.append(request.forms.get('questionasked3'))
+    questions.append(request.forms.get('questionasked4'))
+    questions.append(request.forms.get('questionasked5'))
+
     answers = []
     answers.append(request.forms.get('answer1'))
     answers.append(request.forms.get('answer2'))
@@ -130,7 +137,7 @@ def get_quiz(partname):
     quiz_name = 'activity:qr_demo_%s_quiz' % partname
     display_name = urllib.unquote_plus(partname) + ' quiz'
     
-    wrong, data = util.get_result_statements(responses, answers, types, actor, actor_name, quiz_name, display_name)
+    wrong, data = util.get_result_statements(responses, answers, types, questions, actor, actor_name, quiz_name, display_name)
     post_resp = requests.post(settings.LRS_STATEMENT_ENDPOINT, data=json.dumps(data), headers=settings.HEADERS, verify=False)
     status = post_resp.status_code
     content = post_resp.content

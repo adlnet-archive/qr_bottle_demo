@@ -58,6 +58,7 @@ QUIZ_TEMPLATE = """<html>
                                 }
                                 $('#fg' + display_value).append('<input type="hidden" name="' + ('answer' + display_value) + '" value="' + value['correct'] + '">');
                                 $('#fg' + display_value).append('<input type="hidden" name="' + ('type' + display_value) + '" value="' + value['type'] + '">');
+                                $('#fg' + display_value).append('<input type="hidden" name="' + ('questionasked' + display_value) + '" value="' + value['question'] + '">');
                         });
                         $('#buttonDiv').append('<button type="submit" class="btn btn-default" action="#" method="post">Submit</button>')
                 });
