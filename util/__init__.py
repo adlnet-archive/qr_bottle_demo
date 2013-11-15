@@ -10,7 +10,7 @@ def get_existing_pages():
             pages.append({urllib.unquote_plus(f[:-4]): f[:-4]})
     return sorted(pages, key=lambda k: k)
 
-def get_result_statements(responses, answers, types, actor, actor_name, quiz_name, display_name):
+def get_result_statements(responses, answers, types, questions, actor, actor_name, quiz_name, display_name):
     data = [
             {
                 'actor': {'mbox': actor, 'name': actor_name},
@@ -23,35 +23,36 @@ def get_result_statements(responses, answers, types, actor, actor_name, quiz_nam
     data.append({
         'actor': {'mbox': actor, 'name': actor_name},
         'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-        'object':{'id':quiz_name + '_question1', 'definition':{'name':{'en-US':display_name + ' question1'}}}, 
+        'object':{'id':quiz_name + '_question1', 'definition':{'name':{'en-US':display_name + ' question1'}, 'description':{'en-US':questions[0]}}}, 
         'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
         'result':{'success': True, 'response': responses[0],'extensions': {'answer:correct_answer': answers[0]}}
         })
+
     data.append({
         'actor': {'mbox': actor, 'name': actor_name},
         'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-        'object':{'id':quiz_name + '_question2', 'definition':{'name':{'en-US':display_name + ' question2'}}},
+        'object':{'id':quiz_name + '_question2', 'definition':{'name':{'en-US':display_name + ' question2'}, 'description':{'en-US':questions[1]}}},
         'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
         'result':{'success': True, 'response': responses[1],'extensions': {'answer:correct_answer': answers[1]}}
         })
     data.append({
         'actor': {'mbox': actor, 'name': actor_name},
         'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-        'object':{'id':quiz_name + '_question3', 'definition':{'name':{'en-US':display_name + ' question3'}}},
+        'object':{'id':quiz_name + '_question3', 'definition':{'name':{'en-US':display_name + ' question3'}, 'description':{'en-US':questions[2]}}},
         'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
         'result':{'success': True, 'response': responses[2],'extensions': {'answer:correct_answer': answers[2]}}
         })
     data.append({
         'actor': {'mbox': actor, 'name': actor_name},
         'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-        'object':{'id':quiz_name + '_question4', 'definition':{'name':{'en-US':display_name + ' question4'}}},
+        'object':{'id':quiz_name + '_question4', 'definition':{'name':{'en-US':display_name + ' question4'}, 'description':{'en-US':questions[3]}}},
         'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
         'result':{'success': True, 'response': responses[3],'extensions': {'answer:correct_answer': answers[3]}}
         })
     data.append({
         'actor': {'mbox': actor, 'name': actor_name},
         'verb': {'id': 'http://adlnet.gov/expapi/verbs/answered', 'display':{'en-US': 'answered'}},
-        'object':{'id':quiz_name + '_question5', 'definition':{'name':{'en-US':display_name + ' question5'}}},
+        'object':{'id':quiz_name + '_question5', 'definition':{'name':{'en-US':display_name + ' question5'}, 'description':{'en-US':questions[4]}}},
         'context':{'contextActivities':{'parent':[{'id': quiz_name}]}},
         'result':{'success': True, 'response': responses[4],'extensions': {'answer:correct_answer': answers[4]}}
         })
@@ -76,7 +77,7 @@ def grade_results(types, answers, responses, data):
             data[1]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[0].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[0].split(" ")]):
+        if not set(answers[0].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[0].split(",")]):
             data[1]['result']['success'] = False
             wrong += 1
     
@@ -85,7 +86,7 @@ def grade_results(types, answers, responses, data):
             data[2]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[1].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[1].split(" ")]):
+        if not set(answers[1].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[1].split(",")]):
             data[2]['result']['success'] = False
             wrong += 1
     
@@ -94,7 +95,7 @@ def grade_results(types, answers, responses, data):
             data[3]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[2].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[2].split(" ")]):
+        if not set(answers[2].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[2].split(",")]):
             data[3]['result']['success'] = False
             wrong += 1
 
@@ -103,7 +104,7 @@ def grade_results(types, answers, responses, data):
             data[4]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[3].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[3].split(" ")]):
+        if not set(answers[3].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[3].split(",")]):
             data[4]['result']['success'] = False
             wrong += 1
 
@@ -112,7 +113,7 @@ def grade_results(types, answers, responses, data):
             data[5]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[4].lower().strip().split(',')).issubset([str(i).lower().strip() for i in responses[4].split(" ")]):
+        if not set(answers[4].lower().strip().split(",")).issubset([str(i).lower().strip() for i in responses[4].split(",")]):
             data[5]['result']['success'] = False
             wrong += 1
     return wrong, data
@@ -139,11 +140,11 @@ def retrieve_statements(status, post_content):
         jst7 = json.loads(stmts[6])
 
         sens.append("{0} {1} {2}".format(jst1['actor']['name'], jst1['verb']['display']['en-US'], jst1['object']['definition']['name']['en-US']))
-        sens.append("{0} {1} {2} with {3}. (Answer was {4})".format(jst2['actor']['name'], jst2['verb']['display']['en-US'], jst2['object']['definition']['name']['en-US'], jst2['result']['response'], jst2['result']['extensions']['answer:correct_answer']))
-        sens.append("{0} {1} {2} with {3}. (Answer was {4})".format(jst3['actor']['name'], jst3['verb']['display']['en-US'], jst3['object']['definition']['name']['en-US'], jst3['result']['response'], jst3['result']['extensions']['answer:correct_answer']))
-        sens.append("{0} {1} {2} with {3}. (Answer was {4})".format(jst4['actor']['name'], jst4['verb']['display']['en-US'], jst4['object']['definition']['name']['en-US'], jst4['result']['response'], jst4['result']['extensions']['answer:correct_answer']))
-        sens.append("{0} {1} {2} with {3}. (Answer was {4})".format(jst5['actor']['name'], jst5['verb']['display']['en-US'], jst5['object']['definition']['name']['en-US'], jst5['result']['response'], jst5['result']['extensions']['answer:correct_answer']))
-        sens.append("{0} {1} {2} with {3}. (Answer was {4})".format(jst6['actor']['name'], jst6['verb']['display']['en-US'], jst6['object']['definition']['name']['en-US'], jst6['result']['response'], jst6['result']['extensions']['answer:correct_answer']))
+        sens.append("{0} {1} {2} ({3}) with {4}. (Answer was {5})".format(jst2['actor']['name'], jst2['verb']['display']['en-US'], jst2['object']['definition']['name']['en-US'], jst2['object']['definition']['description']['en-US'], jst2['result']['response'], jst2['result']['extensions']['answer:correct_answer']))
+        sens.append("{0} {1} {2} ({3}) with {4}. (Answer was {5})".format(jst3['actor']['name'], jst3['verb']['display']['en-US'], jst3['object']['definition']['name']['en-US'], jst3['object']['definition']['description']['en-US'], jst3['result']['response'], jst3['result']['extensions']['answer:correct_answer']))
+        sens.append("{0} {1} {2} ({3}) with {4}. (Answer was {5})".format(jst4['actor']['name'], jst4['verb']['display']['en-US'], jst4['object']['definition']['name']['en-US'], jst4['object']['definition']['description']['en-US'], jst4['result']['response'], jst4['result']['extensions']['answer:correct_answer']))
+        sens.append("{0} {1} {2} ({3}) with {4}. (Answer was {5})".format(jst5['actor']['name'], jst5['verb']['display']['en-US'], jst5['object']['definition']['name']['en-US'], jst5['object']['definition']['description']['en-US'], jst5['result']['response'], jst5['result']['extensions']['answer:correct_answer']))
+        sens.append("{0} {1} {2} ({3}) with {4}. (Answer was {5})".format(jst6['actor']['name'], jst6['verb']['display']['en-US'], jst6['object']['definition']['name']['en-US'], jst6['object']['definition']['description']['en-US'], jst6['result']['response'], jst6['result']['extensions']['answer:correct_answer']))
         sens.append("{0} {1} {2}".format(jst7['actor']['name'], jst7['verb']['display']['en-US'], jst7['object']['definition']['name']['en-US']))
     return stmts, sens
 
