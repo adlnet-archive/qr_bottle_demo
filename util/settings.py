@@ -22,20 +22,9 @@ QUIZ_TEMPLATE = """<html>
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="//code.jquery.com/jquery.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
         <script type="text/javascript">
-                var data = [
-                        {'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
-                        {'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-                        {'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-                        {'type':'choice','question': '', answers: [], 'correct': 0},
-                        {'type': 'choice', 'question': '', 'answers': [], 'correct': 0},
-                        {'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-                        {'type':'true/false','question': '', 'answers': [true, false], 'correct': false},
-                        {'type':'choice','question': '', 'answers': [], 'correct': 0},
-                        {'type':'short answer','question': '', 'correct': []},
-                        {'type':'short answer','question': '', 'correct': []}
-                ]
+                var data = %s
 
                 $(document).ready(function(){
                         var question_list = []
@@ -96,7 +85,7 @@ QUIZ_TEMPLATE = """<html>
                         </form> 
                 </div>        
 </div>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 </body>
 </html>"""
 
@@ -105,7 +94,7 @@ INSTRUCTION_TEMPLATE = """<html>
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="//code.jquery.com/jquery.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
 </head>
 <body>
     <div class="jumbotron">
@@ -115,7 +104,7 @@ INSTRUCTION_TEMPLATE = """<html>
                 <p><a href='/info/{3}'>info</a></p>
                 </div>        
 </div>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 """
@@ -125,7 +114,7 @@ INFO_TEMPLATE = """<html>
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="//code.jquery.com/jquery.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
 </head>
 <body>
     <div class="jumbotron">
@@ -138,7 +127,7 @@ INFO_TEMPLATE = """<html>
                 <p><a href='/'>home</a></p>
                 </div>        
 </div>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 """        

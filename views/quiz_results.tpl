@@ -14,7 +14,7 @@
 				});
 				$.each({{!sens}}, function(index, value){
 					display_value = index + 1
-	  				$('#sen' + display_value).html(value);						
+	  				$('#sen' + display_value).html(value.toString().replace(/,/g, " "));						
 				});
 	  		});
 	  	</script>
@@ -135,8 +135,6 @@
 			</div>
                 % end
             	<p><a href='/info/{{partname}}'>info</a></p>
-
-
 		</div>
 	</body>
 </html>

@@ -64,7 +64,7 @@ def get_result_statements(responses, answers, types, actor, actor_name, quiz_nam
                 'result':{'score':{'min': 0, 'max': 5, 'raw': 5 - wrong}}
                 })
     
-    if wrong > 2:
+    if wrong >= 2:
         data[6]['verb']['id'] = 'http://adlnet.gov/expapi/verbs/failed'
         data[6]['verb']['display']['en-US'] = 'failed'
     return wrong, data
@@ -76,7 +76,7 @@ def grade_results(types, answers, responses, data):
             data[1]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[0].split(',')).issubset([str(i).lower().strip() for i in responses[0].split(",")]):
+        if not set(answers[0].split(',')).issubset([str(i).lower().strip() for i in responses[0].split(" ")]):
             data[1]['result']['success'] = False
             wrong += 1
     
@@ -85,7 +85,7 @@ def grade_results(types, answers, responses, data):
             data[2]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[1].split(',')).issubset([str(i).lower().strip() for i in responses[1].split(",")]):
+        if not set(answers[1].split(',')).issubset([str(i).lower().strip() for i in responses[1].split(" ")]):
             data[2]['result']['success'] = False
             wrong += 1
     
@@ -94,7 +94,7 @@ def grade_results(types, answers, responses, data):
             data[3]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[2].split(',')).issubset([str(i).lower().strip() for i in responses[2].split(",")]):
+        if not set(answers[2].split(',')).issubset([str(i).lower().strip() for i in responses[2].split(" ")]):
             data[3]['result']['success'] = False
             wrong += 1
 
@@ -103,7 +103,7 @@ def grade_results(types, answers, responses, data):
             data[4]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[3].split(',')).issubset([str(i).lower().strip() for i in responses[3].split(",")]):
+        if not set(answers[3].split(',')).issubset([str(i).lower().strip() for i in responses[3].split(" ")]):
             data[4]['result']['success'] = False
             wrong += 1
 
@@ -112,7 +112,7 @@ def grade_results(types, answers, responses, data):
             data[5]['result']['success'] = False
             wrong += 1
     else:
-        if not set(answers[4].split(',')).issubset([str(i).lower().strip() for i in responses[4].split(",")]):
+        if not set(answers[4].split(',')).issubset([str(i).lower().strip() for i in responses[4].split(" ")]):
             data[5]['result']['success'] = False
             wrong += 1
     return wrong, data
@@ -146,3 +146,24 @@ def retrieve_statements(status, post_content):
         sens.append("{0} {1} {2} with {3}. (Answer was {4})".format(jst6['actor']['name'], jst6['verb']['display']['en-US'], jst6['object']['definition']['name']['en-US'], jst6['result']['response'], jst6['result']['extensions']['answer:correct_answer']))
         sens.append("{0} {1} {2}".format(jst7['actor']['name'], jst7['verb']['display']['en-US'], jst7['object']['definition']['name']['en-US']))
     return stmts, sens
+
+def create_questions(form):
+    data = []
+    q_dict = {}
+    for i in range(1,11):
+        st_i = str(i)
+        q_dict = {}
+        q_dict['type'] = form.get('types' + st_i)
+        q_dict['question'] = form.get('question' + st_i + 'text')
+        
+        if q_dict['type'] == 'short answer':
+            q_dict['correct'] = form.get('question' + st_i + 'answer').split(' ')
+        elif q_dict['type'] == 'true/false':
+            q_dict['correct'] = form.get('question' + st_i + 'answer') in ['True', 'true']
+            q_dict['answers'] = [True, False]
+        else:
+            q_dict['correct'] = form.get('question' + st_i + 'answer')
+            q_dict['answers'] = form.get('question' + st_i + 'choices').split(' ')
+
+        data.append(q_dict)
+    return data
