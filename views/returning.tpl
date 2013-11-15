@@ -12,7 +12,7 @@
 				<p><a href="/signout">sign out</a></p>
 				<p><a href="/makeqr">Create QR</a/></p>
 				% for page in pages:
-					<p><a href="/quiz/{{page.values()[0]}}">{{page.keys()[0]}}</a></p>
+					<p><a href="/info/{{page.values()[0]}}">{{page.keys()[0]}}</a></p>
 				% end
 		</div>
 		</div>

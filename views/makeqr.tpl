@@ -17,177 +17,98 @@
 				  	event.preventDefault();
 				});
 
-				//make sure on initial load boxes are checked and displaying inputs
-				for (i=1; i<11; i++){
-					processCHFields(i)
-				}
-
 				$("input:radio[name=types1]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(1)
-							break;
-						case 'true/false':
-							processTFFields(1)
-							break;
-						case 'short answer':
-							processSAFields(1)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(1)
+					}
+					else{
+						processOtherFields(1)
 					}
 				});
 				$("input:radio[name=types2]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(2)
-							break;
-						case 'true/false':
-							processTFFields(2)
-							break;
-						case 'short answer':
-							processSAFields(2)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(2)
+					}
+					else{
+						processOtherFields(2)
 					}
 				});
 				$("input:radio[name=types3]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(3)
-							break;
-						case 'true/false':
-							processTFFields(3)
-							break;
-						case 'short answer':
-							processSAFields(3)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(3)
+					}
+					else{
+						processOtherFields(3)
 					}
 				});					  		
 				$("input:radio[name=types4]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(4)
-							break;
-						case 'true/false':
-							processTFFields(4)
-							break;
-						case 'short answer':
-							processSAFields(4)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(4)
+					}
+					else{
+						processOtherFields(4)
 					}
 				});					  		
 				$("input:radio[name=types5]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(5)
-							break;
-						case 'true/false':
-							processTFFields(5)
-							break;
-						case 'short answer':
-							processSAFields(5)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(5)
+					}
+					else{
+						processOtherFields(5)
 					}
 				});					  		
 				$("input:radio[name=types6]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(6)
-							break;
-						case 'true/false':
-							processTFFields(6)
-							break;
-						case 'short answer':
-							processSAFields(6)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(6)
+					}
+					else{
+						processOtherFields(6)
 					}
 				});					  		
 				$("input:radio[name=types7]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(7)
-							break;
-						case 'true/false':
-							processTFFields(7)
-							break;
-						case 'short answer':
-							processSAFields(7)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(7)
+					}
+					else{
+						processOtherFields(7)
 					}
 				});					  		
 				$("input:radio[name=types8]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(8)
-							break;
-						case 'true/false':
-							processTFFields(8)
-							break;
-						case 'short answer':
-							processSAFields(8)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(8)
+					}
+					else{
+						processOtherFields(8)
 					}
 				});					  		
 				$("input:radio[name=types9]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(9)
-							break;
-						case 'true/false':
-							processTFFields(9)
-							break;
-						case 'short answer':
-							processSAFields(9)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(9)
+					}
+					else{
+						processOtherFields(9)
 					}
 				});					  		
 				$("input:radio[name=types10]").click(function(){
-					var q_type = $(this).val()
-					switch (q_type){
-						case 'choice':
-							processCHFields(10)
-							break;
-						case 'true/false':
-							processTFFields(10)
-							break;
-						case 'short answer':
-							processSAFields(10)
-							break;
+					if ($(this).val() == 'choice'){
+						processCHFields(10)
+					}
+					else{
+						processOtherFields(10)
 					}
 				});					  		
 	  		});
-			
 			function processCHFields(num){
-				$("#question" + num + "tfgroup").hide();
-				$("#question" + num + "sagroup").hide();
-				$("#question" + num + "chgroup").html('')
-				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control"></div></div')
-				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'choices') + '" class="col-lg-2 control-label">Q' + num + ' Choices</label><div class="col-lg-10"><input name="' + ('question' + num + 'choices') + '" type="text" class="form-control"></div></div>')
-				$("#question" + num + "chgroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control"></div></div>')
-				$("#question" + num + "chgroup").show()
+				if (!($("#choices" + num + "div").is(":visible"))){
+					$("#choices" + num + "div").show();
+					$("#question" + num + "choicesinput").attr("required", true)
+				}
 			}
-			function processTFFields(num){
-				$("#question" + num + "chgroup").hide();
-				$("#question" + num + "sagroup").hide();
-				$("#question" + num + "tfgroup").html('')
-				$("#question" + num + "tfgroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control"></div></div>')
-				$("#question" + num + "tfgroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control"></div></div>')
-				$("#question" + num + "tfgroup").show()
-			}
-			function processSAFields(num){
-				$("#question" + num + "tfgroup").hide();
-				$("#question" + num + "chgroup").hide();
-				$("#question" + num + "sagroup").html('')
-				$("#question" + num + "sagroup").append('<div class="form-group"><label for="' + ('question' + num + 'text') + '" class="col-lg-2 control-label">Q' + num + ' Text</label><div class="col-lg-10"><input name="' + ('question' + num + 'text') + '" type="text" class="form-control"></div></div>')
-				$("#question" + num + "sagroup").append('<div class="form-group"><label for="' + ('question' + num + 'answer') + '" class="col-lg-2 control-label">Q' + num + ' Answer</label><div class="col-lg-10"><input name="' + ('question' + num + 'answer') + '" type="text" class="form-control"></div></div>')
-				$("#question" + num + "sagroup").show()
+			function processOtherFields(num){
+				if ($("#choices" + num + "div").is(":visible")){
+					$("#choices" + num + "div").hide();
+					$("#question" + num + "choicesinput").removeAttr('required');
+				}
 			}
   		</script>
 	</head>
@@ -233,153 +154,302 @@
 				   	<label for="question1" class="col-lg-2 control-label">Q1 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types1" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types1" type="radio" value="true/false">true/false
+		   					<input name="types1" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types1" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types1" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
 				   </div>
-				   <div class="form-group" id="question1chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question1tfgroup"></div>
-				   <div class="form-group" id="question1sagroup"></div>
+				   <div class="form-group">
+				   		<label for="question1text" class="col-lg-2 control-label">Q1 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question1text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question1answer" class="col-lg-2 control-label">Q1 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question1answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices1div" hidden>
+				   		<label for="question1choices" class="col-lg-2 control-label">Q1 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question1choices" type="text" class="form-control" id="question1choicesinput">
+				   		</div>
+				   </div>
 				   <div class="form-group">
 				   	<label for="question2" class="col-lg-2 control-label">Q2 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types2" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types2" type="radio" value="true/false">true/false
+		   					<input name="types2" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types2" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types2" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   <div class="form-group">
+				   		<label for="question2text" class="col-lg-2 control-label">Q2 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question2text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question2answer" class="col-lg-2 control-label">Q2 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question2answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices2div" hidden>
+				   		<label for="question2choices" class="col-lg-2 control-label">Q2 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question2choices" type="text" class="form-control" id="question2choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question2chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question2tfgroup"></div>
-				   <div class="form-group" id="question2sagroup"></div>
+				   </div>
 				   <div class="form-group">
 				   	<label for="question3" class="col-lg-2 control-label">Q3 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types3" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types3" type="radio" value="true/false">true/false
+		   					<input name="types3" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types3" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types3" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question3text" class="col-lg-2 control-label">Q3 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question3text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question3answer" class="col-lg-2 control-label">Q3 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question3answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices3div" hidden>
+				   		<label for="question3choices" class="col-lg-2 control-label">Q3 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question3choices" type="text" class="form-control" id="question3choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question3chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question3tfgroup"></div>
-				   <div class="form-group" id="question3sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question4" class="col-lg-2 control-label">Q4 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types4" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types4" type="radio" value="true/false">true/false
+		   					<input name="types4" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types4" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types4" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question4text" class="col-lg-2 control-label">Q4 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question4text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question4answer" class="col-lg-2 control-label">Q4 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question4answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices4div" hidden>
+				   		<label for="question4choices" class="col-lg-2 control-label">Q4 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question4choices" type="text" class="form-control" id="question4choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question4chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question4tfgroup"></div>
-				   <div class="form-group" id="question4sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question5" class="col-lg-2 control-label">Q5 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types5" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types5" type="radio" value="true/false">true/false
+		   					<input name="types5" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types5" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types5" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
-				   </div>				   
-				   <div class="form-group" id="question5chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question5tfgroup"></div>
-				   <div class="form-group" id="question5sagroup"></div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question5text" class="col-lg-2 control-label">Q5 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question5text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question5answer" class="col-lg-2 control-label">Q5 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question5answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices5div" hidden>
+				   		<label for="question5choices" class="col-lg-2 control-label">Q5 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question5choices" type="text" class="form-control" id="question5choicesinput">
+				   		</div>
+				   </div>
 				   <div class="form-group">
 				   	<label for="question6" class="col-lg-2 control-label">Q6 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types6" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types6" type="radio" value="true/false">true/false
+		   					<input name="types6" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types6" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types6" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question6text" class="col-lg-2 control-label">Q6 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question6text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question6answer" class="col-lg-2 control-label">Q6 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question6answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices6div" hidden>
+				   		<label for="question6choices" class="col-lg-2 control-label">Q6 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question6choices" type="text" class="form-control" id="question6choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question6chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question6tfgroup"></div>
-				   <div class="form-group" id="question6sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question7" class="col-lg-2 control-label">Q7 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types7" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types7" type="radio" value="true/false">true/false
+		   					<input name="types7" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types7" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types7" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question7text" class="col-lg-2 control-label">Q7 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question7text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question7answer" class="col-lg-2 control-label">Q7 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question7answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices7div" hidden>
+				   		<label for="question7choices" class="col-lg-2 control-label">Q7 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question7choices" type="text" class="form-control" id="question7choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question7chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question7tfgroup"></div>
-				   <div class="form-group" id="question7sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question8" class="col-lg-2 control-label">Q8 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types8" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types8" type="radio" value="true/false">true/false
+		   					<input name="types8" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types8" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types8" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question8text" class="col-lg-2 control-label">Q8 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question8text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question8answer" class="col-lg-2 control-label">Q8 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question8answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices8div" hidden>
+				   		<label for="question8choices" class="col-lg-2 control-label">Q8 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question8choices" type="text" class="form-control" id="question8choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question8chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question8tfgroup"></div>
-				   <div class="form-group" id="question8sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question9" class="col-lg-2 control-label">Q9 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types9" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types9" type="radio" value="true/false">true/false
+		   					<input name="types9" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types9" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types9" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question9text" class="col-lg-2 control-label">Q9 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question9text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question9answer" class="col-lg-2 control-label">Q9 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question9answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices9div" hidden>
+				   		<label for="question9choices" class="col-lg-2 control-label">Q9 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question9choices" type="text" class="form-control" id="question9choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question9chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question9tfgroup"></div>
-				   <div class="form-group" id="question9sagroup"></div>
 				   <div class="form-group">
 				   	<label for="question10" class="col-lg-2 control-label">Q10 Type</label>
 				   	<div class="input-group">
 				   		<div class="btn-group" data-toggle="buttons-radio">
-		   					<input name="types10" type="radio" value="choice" checked="checked">choice
-		   					<br>
-		   					<input name="types10" type="radio" value="true/false">true/false
+		   					<input name="types10" type="radio" value="true/false" checked="checked">true/false
 		   					<br>
 		   					<input name="types10" type="radio" value="short answer">short answer
+		   					<br>
+		   					<input name="types10" type="radio" value="choice">choice
 				   		</div>
 				   	</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question10text" class="col-lg-2 control-label">Q10 Text</label>
+				   		<div class="col-lg-10">
+				   			<input name="question10text" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group">
+				   		<label for="question10answer" class="col-lg-2 control-label">Q10 Answer</label>
+				   		<div class="col-lg-10">
+				   			<input name="question10answer" type="text" class="form-control" required>
+				   		</div>
+				   </div>
+				   <div class="form-group" id="choices10div" hidden>
+				   		<label for="question10choices" class="col-lg-2 control-label">Q10 Choices</label>
+				   		<div class="col-lg-10">
+				   			<input name="question10choices" type="text" class="form-control" id="question10choicesinput">
+				   		</div>
 				   </div>				   
-				   <div class="form-group" id="question10chgroup" style="display: block;"></div>
-				   <div class="form-group" id="question10tfgroup"></div>
-				   <div class="form-group" id="question10sagroup"></div>
-				   
 				   <div class="form-group">
 				   	<div class="col-lg-offset-2 col-lg-10">
 				   		<button type="submit" class="btn btn-default">Create</button>
